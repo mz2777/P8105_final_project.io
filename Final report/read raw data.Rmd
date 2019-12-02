@@ -22,9 +22,8 @@ dbDisconnect(raw)
 
 fires = fires %>% 
   janitor::clean_names() %>% 
-  select(fire_year, discovery_date, discovery_doy,
-         discovery_time, stat_cause_code, stat_cause_descr,
-         cont_date,cont_doy,cont_time,fire_size,fire_size_class,
+  select(fire_year, discovery_date, discovery_time, stat_cause_descr,
+         cont_date, cont_time, fire_size, fire_size_class,
          latitude, longitude, state, county, fips_code, fips_name)
 
 ## constricted the data between 2005 and 2015 for interest
