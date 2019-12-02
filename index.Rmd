@@ -1,9 +1,9 @@
 ---
-title: "Wildfires in the United States"
+title: "Wildfires in the United States from 2005 to 2015"
 output: html_document
 ---
 
-### Exploring the wildfires in the U.S. from 2010 to 2015
+### Exploring the wildfires in the U.S. from 2005 to 2015
 
 ##### **Group members: Sitong Cui (sc4636), Jiarui Fu (jf3285), Mengyuan Li (ml4418), Mengyu Zhang (mz2777), Ziqi Zhou (zz2710)**
 
