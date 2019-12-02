@@ -1,0 +1,40 @@
+---
+title: "read raw data"
+author: "Cui Sitong (sc4636)"
+date: "12/2/2019"
+output: html_document
+---
+
+## Read Raw Data
+
+```{r setup, include = FALSE}
+library(tidyverse)
+library(RSQLite)
+```
+
+We found the raw data from [here](https://www.kaggle.com/rtatman/188-million-us-wildfires). It included data about US wildfires from 1992 to 2015. Since our computering power is limited, we are only interested in wildfires between 2005 and 2015, which is saved as a new csv file.
+
+```{r read and clean raw data}
+## read sqlite raw file, 758.9Mb
+raw = dbConnect(SQLite(), "./data/FPA_FOD_20170508.sqlite")
+fires = tbl(raw, "Fires") %>% collect()
+dbDisconnect(raw)
+
+fires = fires %>% 
+  janitor::clean_names() %>% 
+  select(fire_year, discovery_date, discovery_doy,
+         discovery_time, stat_cause_code, stat_cause_descr,
+         cont_date,cont_doy,cont_time,fire_size,fire_size_class,
+         latitude, longitude, state, county, fips_code, fips_name)
+
+## constricted the data between 2005 and 2015 for interest
+
+fire_0515 = fires %>% 
+  filter(fire_year %in% c(2005:2015))
+
+## save the dataframe into a csv file
+
+write_csv(fire_0515, path = "fire_0515")
+```
+
+
