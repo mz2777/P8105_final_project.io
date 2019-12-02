@@ -5,8 +5,8 @@ account: mengyuzhang
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 1545838
-bundleId: 2631055
+bundleId: 2631139
 url: https://mengyuzhang.shinyapps.io/num_wildfire/
-when: 1575245812.59713
+when: 1575248495.39009
 asMultiple: FALSE
 asStatic: FALSE
