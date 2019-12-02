@@ -1,0 +1,84 @@
+---
+title: "Exploratory Analysis"
+author: "Jiarui Fu"
+date: "12/1/2019"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(ggridges)
+library(gganimate)
+library(gifski)
+library(png)
+```
+
+## R Markdown
+
+```{r}
+tidy_fire = read_csv("data/tidy_fire_1")
+tidy_fire_2 = 
+  tidy_fire %>% 
+  mutate(region = state.name[match(state, state.abb)]) %>% 
+  mutate(region = tolower(region)) 
+
+# cause ranking based on number of fires
+tidy_fire_2 %>% 
+  group_by(stat_cause_descr) %>% 
+  summarize(n_fire = n()) %>% 
+  ggplot(aes(x = fct_reorder(stat_cause_descr, n_fire), y = n_fire)) +
+  geom_bar(stat = "identity", aes(fill = stat_cause_descr), alpha=.6, width=.4) +
+  coord_flip() +
+  labs(x = "", y = "Number of Fires", title = "Wildfire Counts in the U.S. by Causes from 2005 to 2015") +
+  viridis::scale_color_viridis() + theme_bw() + theme(legend.position = "none")
+
+# animation: transition from year 2005 to year 2015, see the number of fires over 50 states
+new_table = 
+  tidy_fire_2 %>% 
+  group_by(state, fire_year) %>% 
+  summarize(n_fire = n()) 
+
+base_graph = 
+  new_table %>% 
+  ggplot(aes(x = state, y = n_fire, fill = state, frame = fire_year)) +
+  geom_bar(stat = "identity", show.legend = FALSE) +
+  theme(axis.text.x  = element_text(angle=90, hjust = 1)) +
+  labs(x = "State", y = "Number of Fires") +
+  viridis::scale_color_viridis() 
+  
+p = base_graph + 
+  labs(title = "Year {closest_state}, Wildfire Counts by States") +
+  transition_states(
+    states = fire_year,
+    transition_length = 5,
+    state_length = 10,
+    wrap = TRUE
+  ) +
+  enter_fade() + exit_fade() + ease_aes("sine-in-out")
+
+animate(p)
+
+# distribution of duration vs fire size class, for different causes
+tidy_fire_2 %>% 
+  mutate(duration = duration / 60) %>% 
+  ggplot(aes(x = duration, y = fire_size_class, fill = stat_cause_descr)) +
+  geom_density_ridges(alpha = 0.4) +
+  xlim(-100, 2500) +
+  theme_ridges() + 
+  labs(x = "Duration (hours)",
+       y = "Fire Size Class",
+       fill = "Causes")
+
+# distribution of duration vs fire size, with different causes
+tidy_fire_2 %>% 
+  mutate(duration = duration / 60) %>% 
+  ggplot(aes(x = duration, y = fire_size, size = fire_size, color = stat_cause_descr)) +
+  geom_point(alpha = 0.4) + 
+  xlim(-100, 5000) +
+  labs(x = "Duration (hours)",
+       y = "Fire Size",
+       color = "Causes",
+       size = "Fire Size") 
+
+```
+

@@ -1,0 +1,93 @@
+---
+title: "proposal2.0"
+date: "11/17/2019"
+output: github_document
+---
+
+## Group Member
+
+  * Sitong Cui (sc4636)
+  * Jiarui Fu (jf3285) 
+  * Mengyuan Li (ml4418)
+  * Mengyu Zhang (mz2777)
+  * Ziqi Zhou (zz2710)
+
+## Project Title
+
+Topic: 
+
+## Motivation
+
+
+***
+
+
+
+## Intended Final Product
+
+
+
+
+***
+
+
+
+### Part I Exploratory Analysis
+
+* The distributions of wildfire occurring frenquency in the U.S.
+* The relationship between the wildfire occurring frequency and time or location.
+* The relationship between the fire size and the time or location.
+* 
+* ...
+
+### Part II Statistical analyses
+
+* 
+
+## Anticipated Data Sources
+
+* 1.88 Million US Wildfires.24 years of geo-referenced wildfire records [here](https://www.kaggle.com/rtatman/188-million-us-wildfires)
+
+
+## Challenges
+
+### Tidying
+* Deal with different words with the same meaning
+* Deal with categoric variables
+* Deal with missing value
+* Deal with the notes
+
+***
+How to recode:    
+* 
+
+### Planned Analysis
+* 
+***
+* 
+
+### Visualizations
+* Heat plot
+* The map showing the wildfire annual distribution in the U.S.
+
+***
+* 
+
+## Planned Timeline
+
+| Scheduled Tasks                   | Due dates                 |
+| --------------------------------- | ------------------------- |
+| Scrape data and tidy              | Nov. 15 (Friday)          |
+| Analyse and produce visualization | Nov. 22 (Friday)          |
+| Draft report                      | Nov. 29 (Friday)          |
+| Make webpage and screencast       | Dec. 3  (Tuesday)         |
+| Final editing                     | Dec. 4  (Wednesday)       |
+
+
+
+
+
+
+
+
+
