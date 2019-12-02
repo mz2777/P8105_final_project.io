@@ -1,5 +1,5 @@
 ---
-title: "index"
+title: "Wild fire"
 output: html_document
 ---
 
