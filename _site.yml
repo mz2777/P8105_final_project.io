@@ -6,12 +6,18 @@ navbar:
   right: 
     - text: "Overview"
       href: overview.html
+    - text: "Explortary Analysis"
+      href: eda.html
+    - text: "Statistical Analysis"
+      href: .html
     - text: Shiny Apps
       menu:
       - text: "Number of Wildfires in US"
         href: https://mengyuzhang.shinyapps.io/num_wildfire/
       - text: "Number of Wildfires in States"
         href: https://mengyuzhang.shinyapps.io/num_state/
+    - text: Project Report
+      href: report.html
     - icon: fa-github fa-lg
       href: https://github.com/mz2777/P8105_final_project.io
     - icon: fa-envelope fa-lg
