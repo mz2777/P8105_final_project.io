@@ -1,0 +1,20 @@
+name: "The Heart Project"
+output_dir: "."
+navbar:
+  title: "Home"
+  href: index.html
+  right: 
+    - text: "Number of Wildfires in US"
+      href: https://mengyuzhang.shinyapps.io/num_wildfire/
+    - text: "Number of Wildfires in States"
+      href: https://mengyuzhang.shinyapps.io/num_state/
+    - icon: fa-heartbeat fa-lg
+      href: https://heartbeathealth.com/
+    - icon: fa-github fa-lg
+      href: https://github.com/alc2279/p8105_final_project
+    - icon: fa-envelope fa-lg
+      href: mailto:<alc2279@cumc.columbia.edu>
+output:
+  html_document:
+    theme: journal
+    
