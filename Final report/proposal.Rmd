@@ -27,7 +27,6 @@ Based on the purpose of effectively preventing wildfires, our group work on the 
 ***
 
 
-
 ## Intended Final Product
 
 shiny APP which can show deographical distribution (maps) of wildfires in US from 2009 to 2015, and in both 2010 and 2015. 
