@@ -34,7 +34,7 @@ fire_0515 = fires %>%
 
 ## save the dataframe into a csv file
 
-write_csv(fire_0515, path = "fire_0515")
+write_csv(fire_0515, path = "./data/fire_0515.csv")
 ```
 
 
