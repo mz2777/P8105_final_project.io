@@ -1,56 +1,53 @@
 ---
-title: "Final Project"
-author: "Mengyu Zhang"
-date: "11/17/2019"
+title: "Final Project Data Clean"
+author: "Ziqi Zhou"
+date: "12/02/2019"
 output: github_document
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 ```
 ### Clean Data
-```{r roughly data cleaning}
-fire = read_csv("data/fire.csv")
+```{r roughly data cleaning, message = FALSE}
+fire = read_csv("data/fire_0515.csv")
 ```
 
 select useful columns
 ```{r}
 tidy_fire = 
   fire %>% 
-  select(fire_year, discovery_date, discovery_doy,
-         discovery_time, stat_cause_code, stat_cause_descr,
-         cont_date,cont_doy,cont_time,fire_size,fire_size_class,
-         latitude, longitude, state, county, fips_code, fips_name)
+  separate(cont_time, into = c("cont_hour","cont_min") ,sep = 2) %>% 
+  separate(discovery_time, into = c("disc_hour","disc_min") ,sep = 2) %>% 
+  mutate(cont_hour = as.numeric(cont_hour),
+         cont_min = as.numeric(cont_min),
+         disc_hour = as.numeric(disc_hour),
+         disc_min = as.numeric(disc_min)) %>% 
+  mutate(fips_name = tolower(fips_name),
+         state = fct_inorder(state),
+         fire_size_class = fct_inorder(fire_size_class),
+         region = state.name[match(state,state.abb)]) 
 ```
 
 calculate duration
 ```{r}
 tidy_fire = 
   tidy_fire %>% 
-  separate(cont_time, into =c("cont_hour","cont_min") ,sep = 2) %>% 
-  separate(discovery_time, into =c("disc_hour","disc_min") ,sep = 2) %>% 
-  mutate(cont_hour = as.numeric(cont_hour),
-         cont_min = as.numeric(cont_min),
-         disc_hour = as.numeric(disc_hour),
-         disc_min = as.numeric(disc_min)) %>% 
+  # change julian days
+  mutate(discovery_date = as.Date(discovery_date - 2458014.5, origin = '2017-09-18'),
+         cont_date = as.Date(cont_date - 2458014.5, origin = '2017-09-18'),
+         duration_day = as.numeric(difftime(cont_date, discovery_date))
+          ) %>% 
   mutate(
-    duration_day = cont_doy - discovery_doy,
     duration_hour = cont_hour - disc_hour,
     duration_min = cont_min - disc_min,
-    duration = duration_day*24*60 + duration_hour*60 + duration_min
+    duration = duration_day / 60 + duration_hour * 60 + duration_min
   ) %>% 
-  select(-duration_day,-duration_hour,-duration_min) %>% 
+  select(-duration_day, -duration_hour,-duration_min) %>% 
   mutate(fips_name = tolower(fips_name),
          state = fct_inorder(state),
          fire_size_class = fct_inorder(fire_size_class),
-         region = state.name[match(state,state.abb)]) %>% 
-  mutate(region = tolower(region)) 
+         region = state.name[match(state,state.abb)])
 ```
-
-
-```{r}
-clean_fire= write_csv(tidy_fire, path = "./data/clean_fire")
-```
-
 
