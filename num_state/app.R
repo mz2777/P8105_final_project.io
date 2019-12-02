@@ -12,7 +12,8 @@ library(mapproj)
 fire = read_csv("fire.csv")
 
 fire_tidy = fire %>%
-    drop_na(fips_name)
+    drop_na(fips_name) %>% 
+    filter(fire_year %in% c(2010, 2015))
 
 state.abb = append(state.abb, c("DC", "PR"))
 state.name = append(state.name, c("District of Columbia", "Puerto Rico"))
@@ -33,7 +34,7 @@ ui = fluidPage(
     sidebarLayout(
         sidebarPanel(
             helpText("Create demographic maps for each state with 
-               fire data from 2009 to 2015."),
+               fire data from 2010 and 2015."),
             
             
             selectInput("year_choice", label = h3("Choose year"),
@@ -69,7 +70,7 @@ server = function(input, output) {
                                   name = 'Number of fires') + 
             theme_map() + 
             coord_map('albers', lat0=30, lat1=40) + 
-            ggtitle("US Wildfires, 2009 to 2015") + 
+            ggtitle("US Wildfires, 2010 and 2015") + 
             theme(plot.title = element_text(hjust = 0.5))
         
         

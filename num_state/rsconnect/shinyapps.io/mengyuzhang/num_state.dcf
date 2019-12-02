@@ -5,8 +5,8 @@ account: mengyuzhang
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 1546232
-bundleId: 2631148
+bundleId: 2631171
 url: https://mengyuzhang.shinyapps.io/num_state/
-when: 1575248723.31961
+when: 1575249678.26375
 asMultiple: FALSE
 asStatic: FALSE
