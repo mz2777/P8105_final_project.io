@@ -1,7 +1,7 @@
 ---
-title: "proposal2.0"
-date: "11/17/2019"
-output: github_document
+title: "proposal"
+date: 12/02/2019
+output: html_document
 ---
 
 ## Group Member
@@ -12,11 +12,16 @@ output: github_document
   * Mengyu Zhang (mz2777)
   * Ziqi Zhou (zz2710)
 
+
 ## Project Title
 
-Topic: 
+Topic: 2005-2015 US Wildfires 
 
 ## Motivation
+
+Wildfire is dangerous and needs people’s enough attention because of its uncontrollability and destructive effects. At every year, wildfire leads to big financial loss and kills many lives. Moreover, the environment pollution due to wildfire is far more severe than wildfire itself. If there is any approach that helps us effectively prevent wildfires, then we can save our lives and avoid many big losses and destructions. 
+
+Based on the purpose of effectively preventing wildfires, our group work on the dataset, “1.88 Million US Wildfires-24 years of geo-referenced wildfire records”, and try to discover some potential trends of wildfires. 
 
 
 ***
@@ -25,24 +30,20 @@ Topic:
 
 ## Intended Final Product
 
-
+shiny APP which can show deographical distribution (maps) of wildfires in US from 2009 to 2015, and in both 2010 and 2015. 
 
 
 ***
 
 
 
-### Part I Exploratory Analysis
+## Planned Analysis
 
 * The distributions of wildfire occurring frenquency in the U.S.
 * The relationship between the wildfire occurring frequency and time or location.
 * The relationship between the fire size and the time or location.
-* 
-* ...
 
-### Part II Statistical analyses
 
-* 
 
 ## Anticipated Data Sources
 
@@ -50,28 +51,23 @@ Topic:
 
 
 ## Challenges
-
-### Tidying
-* Deal with different words with the same meaning
-* Deal with categoric variables
-* Deal with missing value
-* Deal with the notes
+* big dataset
+* hard to calculate wildfire duration
+* difficulty of building websites
 
 ***
-How to recode:    
-* 
+
 
 ### Planned Analysis
-* 
-***
-* 
+* Which state has most wildfires
+* Which state has biggest wildfire
+* Is there any relationship between wildfire size and duration
 
 ### Visualizations
-* Heat plot
+* ridge plot, bubble plot, density polt, etc.  
 * The map showing the wildfire annual distribution in the U.S.
 
 ***
-* 
 
 ## Planned Timeline
 
