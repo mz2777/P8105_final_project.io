@@ -82,71 +82,19 @@ tidy_fire %>%
 ![](Graphs_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
 
 ``` r
-# animation: transition from year 2005 to year 2015, see the number of fires over 50 states
-new_table = 
-  tidy_fire %>% 
-  group_by(state, fire_year) %>% 
-  summarize(n_fire = n()) 
-
-base_graph = 
-  new_table %>% 
-  ggplot(aes(x = state, y = n_fire, fill = state, frame = fire_year)) +
-  geom_bar(stat = "identity", show.legend = FALSE) +
-  theme(axis.text.x  = element_text(angle=90, hjust = 1)) +
-  labs(x = "State", y = "Number of Fires") +
-  viridis::scale_color_viridis() 
-  
-p = base_graph + 
-  labs(title = "Year {closest_state}, Wildfire Counts by States") +
-  transition_states(
-    states = fire_year,
-    transition_length = 5,
-    state_length = 10,
-    wrap = TRUE
-  ) +
-  enter_fade() + exit_fade() + ease_aes("sine-in-out")
-
-animate(p)
-```
-
-![](Graphs_files/figure-gfm/unnamed-chunk-1-1.gif)<!-- -->
-
-``` r
-# distribution of duration vs fire size class, for different causes
+# distribution of duration vs fire size class, set a maximum duration of 48hrs/2days
 tidy_fire %>% 
-  mutate(duration = duration / 60) %>% 
-  ggplot(aes(x = duration, y = fire_size_class, fill = stat_cause_descr)) +
-  geom_density_ridges(alpha = 0.4) +
-  xlim(-100, 2500) +
-  theme_ridges() + 
-  labs(x = "Duration (hours)",
-       y = "Fire Size Class",
-       fill = "Causes")
+  mutate(fire_size_class = fct_relevel(fire_size_class, c("A", "B", "C", "D", "E", "F", "G"))) %>% 
+  drop_na(duration) %>% 
+  filter(duration < 2880) %>%
+  filter(duration != 0) %>%  
+  ggplot(aes(x = duration/60, fill = fire_size_class)) +
+  geom_density(alpha = 0.4) +
+  labs(x = "Duration (hours)", fill = "Fire Size Class") +
+  theme_bw()
 ```
 
-    ## Picking joint bandwidth of 30.7
-
-    ## Warning: Removed 459603 rows containing non-finite values
-    ## (stat_density_ridges).
-
-![](Graphs_files/figure-gfm/unnamed-chunk-1-3.png)<!-- -->
-
-``` r
-# distribution of duration vs fire size, with different causes
-tidy_fire %>% 
-  mutate(duration = duration / 60) %>% 
-  ggplot(aes(x = duration, y = fire_size, size = fire_size, color = stat_cause_descr)) +
-  geom_point(alpha = 0.4) + 
-  xlim(-100, 5000) +
-  labs(x = "Duration (hours)",
-       y = "Fire Size",
-       color = "Causes",
-       size = "Fire Size") 
-```
-
-    ## Warning: Removed 458765 rows containing missing values (geom_point).
-
-![](Graphs_files/figure-gfm/unnamed-chunk-1-4.png)<!-- -->
+![](Graphs_files/figure-gfm/unnamed-chunk-1-2.png)<!-- -->
 
 ``` r
 # wordclouding: causes by count
@@ -191,4 +139,4 @@ p = wordcloud(words = fire$stat_cause_descr, freq = fire$n_cause, scale = c(3, .
           colors=brewer.pal(8, "Dark2"))
 ```
 
-![](Graphs_files/figure-gfm/unnamed-chunk-1-5.png)<!-- -->
+![](Graphs_files/figure-gfm/unnamed-chunk-1-3.png)<!-- -->
