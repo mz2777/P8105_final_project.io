@@ -41,7 +41,10 @@ ui = fluidPage(
                         choices = year,
                         selected = NULL),
             selectInput("region_choice", label = h3("Choose state"),
-                        choices = region)
+                        choices = region),
+            
+            
+            width = 3
             
         ),
         
