@@ -27,6 +27,9 @@ library(ggthemes)
 
 library(viridis)
 
+library(wordcloud)
+library(RColorBrewer)
+
 theme_set(theme_minimal() + theme(legend.position = "bottom"))
 ```
 ### Clean Data
@@ -172,10 +175,43 @@ tidy_fire %>%
     theme(plot.title = element_text(hjust = 0.5))
 ```
 
+Cause ranking
+```{r}
+tidy_fire %>% 
+  group_by(stat_cause_descr) %>% 
+  summarize(n_fire = n()) %>% 
+  ggplot(aes(x = fct_reorder(stat_cause_descr, n_fire), y = n_fire)) +
+  geom_bar(stat = "identity", aes(fill = stat_cause_descr), alpha=.6, width=.4) +
+  coord_flip() +
+  labs(x = "", y = "Number of Fires", title = "Wildfire Counts in the U.S. by Causes from 2005 to 2015") +
+  viridis::scale_color_viridis() + theme_bw() + theme(legend.position = "none")
+```
 
 
+Distribution of duration for different fire size class
+```{r}
+tidy_fire %>% 
+  mutate(fire_size_class = fct_relevel(fire_size_class, c("A", "B", "C", "D", "E", "F", "G"))) %>% 
+  drop_na(duration) %>% 
+  filter(duration < 2880) %>%
+  filter(duration != 0) %>%  
+  ggplot(aes(x = duration/60, fill = fire_size_class)) +
+  geom_density(alpha = 0.4) +
+  labs(x = "Duration (hours)", fill = "Fire Size Class") +
+  theme_bw()
+```
 
-
+Wordclouding cause
+```{r}
+fire = 
+  fire %>% 
+  group_by(stat_cause_descr) %>% 
+  summarise(n_cause = n())
+set.seed(555)
+p = wordcloud(words = fire$stat_cause_descr, freq = fire$n_cause, scale = c(3, .8), min.freq = 1,
+          max.words=200, random.order=FALSE, rot.per=0.35, 
+          colors=brewer.pal(8, "Dark2"))
+```
 
 
 
