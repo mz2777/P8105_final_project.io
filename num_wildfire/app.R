@@ -23,6 +23,11 @@ fire_region = fire_tidy %>%
 
 state_map = map_data('state')
 
+# Create region column in state.x77 of lowercase state names
+state.x77 = state.x77 %>%
+    as.data.frame() %>%
+    mutate(region = tolower(rownames(state.x77)))
+
 # Define UI for application that draws a histogram
 year = fire_region %>% distinct(fire_year) %>% pull()
 
@@ -42,14 +47,17 @@ ui = fluidPage(
         ),
         
         mainPanel(
-            plotlyOutput("map")
+            tabsetPanel(
+                tabPanel("Total number of Wildfire", plotlyOutput("totalGraph")),
+                tabPanel("Number of Wildfires per Square Mile", plotlyOutput("mileGraph"))
+            )
         )
     )
 )
 
 server = function(input, output) {
     
-    output$map = renderPlotly({  
+    output$totalGraph = renderPlotly({  
         
         fire_region %>%
             filter(fire_year == input$year_choice) %>% 
@@ -57,6 +65,28 @@ server = function(input, output) {
             summarize(n = n()) %>%
             right_join(state_map, by = 'region') %>%
             ggplot(aes(x = long, y = lat, group = group, fill = n, text = paste("State:", str_to_title(region)))) + 
+            geom_polygon() + 
+            geom_path(color = 'white') + 
+            scale_fill_continuous(low = "orange", 
+                                  high = "darkred",
+                                  name = 'Number of fires') + 
+            theme_map() + 
+            coord_map('albers', lat0=30, lat1=40) + 
+            ggtitle("US Wildfires, 2009-2015") + 
+            theme(plot.title = element_text(hjust = 0.5))
+        
+    })
+    
+    output$mileGraph = renderPlotly({  
+        
+        fire_region %>%
+            filter(fire_year == input$year_choice) %>% 
+            group_by(region, fire_year) %>%
+            summarize(n = n()) %>%
+            left_join(state.x77, by = 'region') %>%
+            mutate(fires_per_sqm = n / Area) %>%
+            right_join(state_map, by = 'region') %>%
+            ggplot(aes(x = long, y = lat, group = group, fill = fires_per_sqm, text = paste("State:", str_to_title(region)))) + 
             geom_polygon() + 
             geom_path(color = 'white') + 
             scale_fill_continuous(low = "orange", 
