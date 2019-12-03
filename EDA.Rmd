@@ -1,8 +1,7 @@
 ---
 title: "EDA"
-author: "Ziqi Zhou"
-date: "12/3/2019"
-output: github_document
+
+output: html_document
 ---
 
 ```{r setup, include = FALSE}
