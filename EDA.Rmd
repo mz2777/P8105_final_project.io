@@ -146,7 +146,7 @@ tidy_fire %>%
     theme_map() + 
     labs(title = "The number of wildfire in U.S. during 2005 to 2015") + 
     coord_map('albers', lat0=30, lat1=40) + 
-    theme(plot.title = element_text(hjust = 0.5))
+    theme(plot.title = element_text(hjust = 0.5), legend.position = "bottom")
 ```
 
 By area
@@ -168,11 +168,11 @@ tidy_fire %>%
     geom_path(color = 'white') + 
     scale_fill_continuous(low = "orange", 
                           high = "darkred",
-                          name = 'Fires per \nsquare mile') + 
+                          name = 'Fires per square mile') + 
     theme_map() + 
     coord_map('albers', lat0=30, lat1=40) + 
     ggtitle("Wildfires per Square Mile by 2005-2015") + 
-    theme(plot.title = element_text(hjust = 0.5))
+    theme(plot.title = element_text(hjust = 0.5), legend.position = "bottom") 
 ```
 
 Cause ranking
