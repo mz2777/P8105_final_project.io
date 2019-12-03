@@ -1,0 +1,191 @@
+---
+title: "EDA"
+
+output: html_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+	fig.width = 8, 
+  fig.height = 6,
+  out.width = "90%"
+)
+
+library(tidyverse)
+library(leaflet)
+library(lubridate)
+library(ggExtra)
+library(plotly)
+
+library(maps)
+library(mapdata)
+library(ggthemes)
+library(mapproj)
+library(ggthemes)
+
+library(viridis)
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+```
+### Clean Data
+```{r roughly data cleaning, message = FALSE}
+fire = read_csv("./final_report/data/fire_0515.csv")
+```
+
+select useful columns
+```{r}
+tidy_fire = 
+  fire %>% 
+  separate(cont_time, into = c("cont_hour","cont_min") ,sep = 2) %>% 
+  separate(discovery_time, into = c("disc_hour","disc_min") ,sep = 2) %>% 
+  mutate(cont_hour = as.numeric(cont_hour),
+         cont_min = as.numeric(cont_min),
+         disc_hour = as.numeric(disc_hour),
+         disc_min = as.numeric(disc_min))
+```
+
+calculate duration
+```{r}
+state.abb = append(state.abb, c("DC", "PR"))
+state.name = append(state.name, c("District of Columbia", "Puerto Rico"))
+
+tidy_fire = 
+  tidy_fire %>% 
+  # change julian days
+  mutate(discovery_date = as.Date(discovery_date - 2458014.5, origin = '2017-09-18'),
+         cont_date = as.Date(cont_date - 2458014.5, origin = '2017-09-18'),
+         duration_day = as.numeric(difftime(cont_date, discovery_date))
+          ) %>% 
+  mutate(
+    duration_hour = cont_hour - disc_hour,
+    duration_min = cont_min - disc_min,
+    duration = duration_day / 60 + duration_hour * 60 + duration_min
+  ) %>% 
+  select(-duration_day, -duration_hour,-duration_min) %>% 
+  mutate(fips_name = tolower(fips_name),
+         state = fct_inorder(state),
+         fire_size_class = fct_inorder(fire_size_class),
+         region = state.name[match(state, state.abb)])  
+```
+
+## EDA
+```{r}
+count_overtime = 
+  tidy_fire %>% 
+  group_by(fire_year) %>% 
+  summarize(cases = n())
+
+count_overtime %>% 
+  ggplot(aes(x = fire_year, y = cases)) + 
+  geom_point() + geom_line() + 
+  labs(
+    title = "The total wildfire cases trend over time in U.S. ",
+    x = "Year",
+    y = "Total wildfire cases in U.S.",
+    caption = "Data from 2005 to 2015"
+  ) + 
+  scale_x_continuous(
+    breaks = c(2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015), 
+    labels = c("2005","2006","2007","2008","2009","2010","2011","2012","2013","2014","2015"))
+```
+heatmap for trend over time
+```{r}
+heatmap_plot = tidy_fire %>%
+  separate(discovery_date, into = c('year', 'month', 'day'), sep = "-") %>% 
+  mutate(month = month.abb[as.numeric(month)],
+         month = fct_rev(factor(month, levels = month.abb))) %>% 
+  group_by(year, month, day) %>% 
+  summarise(n_fires = n()) %>% 
+  mutate(day = as.numeric(day))
+ 
+heatmap_plot = heatmap_plot %>% 
+  ggplot(aes(x = day, y = month, fill = n_fires))+
+  geom_tile(color = "white",size = 0.1) + 
+  scale_fill_viridis(name = "Number of Wildfires",option = "C") + 
+  facet_grid(.~ year) +
+  scale_x_continuous(breaks = c(1,10,20,31)) + 
+  theme_minimal(base_size = 8) + 
+  labs(title = "Number of Wildfires from 2005 to 2015", x = "Day", y = "Month") + 
+  theme(legend.position = "bottom")+
+  theme(plot.title = element_text(size = 14))+
+  theme(axis.text.y = element_text(size = 6)) +
+  theme(strip.background = element_rect(colour = "white"))+
+  theme(plot.title = element_text(hjust = 0))+
+  theme(axis.ticks = element_blank())+
+  theme(axis.text = element_text(size = 7))+
+  theme(legend.title = element_text(size = 8))+
+  theme(legend.text = element_text(size = 6))+
+  removeGrid()
+
+ggplotly(heatmap_plot + theme(legend.position = "none"))
+
+```
+
+
+
+top cause over time
+
+```{r}
+state_map <- map_data('state')
+tidy_fire %>% 
+    group_by(region) %>%
+    summarize(n = n()) %>%
+    mutate(region = tolower(region)) %>% 
+    right_join(state_map, by = 'region') %>%
+    ggplot(aes(x = long, y = lat, group = group, fill = n)) + 
+    geom_polygon() + 
+    geom_path(color = 'white') + 
+    scale_fill_continuous(low = "orange", 
+                          high = "darkred",
+                          name = 'The number of fire during 2005 to 2015') +
+    theme_map() + 
+    labs(title = "The number of wildfire in U.S. during 2005 to 2015") + 
+    coord_map('albers', lat0=30, lat1=40) + 
+    theme(plot.title = element_text(hjust = 0.5))
+```
+
+By area
+
+```{r}
+state.x77 <- state.x77 %>%
+    as.data.frame() %>%
+    mutate(region = tolower(rownames(state.x77)))
+
+tidy_fire %>% 
+  mutate(region = tolower(region)) %>% 
+    group_by(region) %>%
+    summarize(n_fires = n()) %>%
+    left_join(state.x77, by = 'region') %>%
+    mutate(fires_per_sqm = n_fires / Area) %>%
+    right_join(state_map, by = 'region') %>%
+    ggplot(aes(x = long, y = lat, group = group, fill = fires_per_sqm)) + 
+    geom_polygon() + 
+    geom_path(color = 'white') + 
+    scale_fill_continuous(low = "orange", 
+                          high = "darkred",
+                          name = 'Fires per \nsquare mile') + 
+    theme_map() + 
+    coord_map('albers', lat0=30, lat1=40) + 
+    ggtitle("Wildfires per Square Mile by 2005-2015") + 
+    theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
