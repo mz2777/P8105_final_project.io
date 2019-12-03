@@ -23,15 +23,15 @@ fire =
          month = fct_rev(factor(month, levels = month.abb)))
 ```
 
-##
+## 
 
 ```{r}
-plot_df = fire %>%
+heatmap_plot = fire %>%
   group_by(year, month, day) %>% 
   summarise(n_fires = n()) %>% 
   mutate(day = as.numeric(day))
  
-plot = plot_df %>% 
+heatmap_plot = heatmap_plot %>% 
   ggplot(aes(x = day, y = month, fill = n_fires))+
   geom_tile(color = "white",size = 0.1) + 
   scale_fill_viridis(name = "Number of Wildfires",option = "C") + 
@@ -50,7 +50,7 @@ plot = plot_df %>%
   theme(legend.text = element_text(size = 6))+
   removeGrid()
 
-ggplotly(plot + theme(legend.position = "none"))
+ggplotly(heatmap_plot + theme(legend.position = "none"))
 
 ```
 
