@@ -6,12 +6,11 @@ output: github_document
 ---
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 ```
 ### Clean Data
 ```{r roughly data cleaning, message = FALSE}
-fire = read_csv("data/fire_0515.csv")
+fire = read_csv("./Final report/data/fire_0515.csv")
 ```
 
 select useful columns
@@ -23,15 +22,14 @@ tidy_fire =
   mutate(cont_hour = as.numeric(cont_hour),
          cont_min = as.numeric(cont_min),
          disc_hour = as.numeric(disc_hour),
-         disc_min = as.numeric(disc_min)) %>% 
-  mutate(fips_name = tolower(fips_name),
-         state = fct_inorder(state),
-         fire_size_class = fct_inorder(fire_size_class),
-         region = state.name[match(state,state.abb)]) 
+         disc_min = as.numeric(disc_min))
 ```
 
 calculate duration
 ```{r}
+state.abb <- append(state.abb, c("DC", "PR"))
+state.name <- append(state.name, c("District of Columbia", "Puerto Rico"))
+
 tidy_fire = 
   tidy_fire %>% 
   # change julian days
@@ -48,6 +46,17 @@ tidy_fire =
   mutate(fips_name = tolower(fips_name),
          state = fct_inorder(state),
          fire_size_class = fct_inorder(fire_size_class),
-         region = state.name[match(state,state.abb)])
+         region = state.name[match(state, state.abb)])
 ```
+
+
+
+
+
+
+
+
+
+
+
 
