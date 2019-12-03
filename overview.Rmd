@@ -16,13 +16,15 @@ Based on the purpose of effectively preventing wildfires, our group work on the 
 
 * 1.88 Million US Wildfires.24 years of geo-referenced wildfire records   [here](https://www.kaggle.com/rtatman/188-million-us-wildfires)
 
-## **Research Questions**
+## **Initial Questions**
 
-* The frequency of wildfire across the statesand time.
+* The frequency of wildfire across the states and time.
 
 * Which cause of fire is the most frequent in the U.S.?
 
 * Is there a relationship among temprature, precipitation, cause of fires, size of fires and duration?
+
+* tbc
 
 ## **Main results**
 
