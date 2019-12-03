@@ -1,0 +1,34 @@
+---
+title: "**Overview**"
+output:
+  html_document: 
+    toc: true
+    toc_float: true
+---
+
+## **Motivation**
+
+Wildfire is dangerous and needs people’s enough attention because of its uncontrollability and destructive effects. Every year, wildfire leads to big financial loss and kills many lives. Moreover, the environment pollution due to wildfire is far more severe than wildfire itself. If there is any approach that helps us effectively prevent wildfires, then we can save our lives and avoid many big losses and destructions. 
+
+Based on the purpose of effectively preventing wildfires, our group work on the dataset, “1.88 Million US Wildfires-24 years of geo-referenced wildfire records”, and try to discover some potential trends of wildfires. 
+
+## **Data**
+
+* 1.88 Million US Wildfires.24 years of geo-referenced wildfire records   [here](https://www.kaggle.com/rtatman/188-million-us-wildfires)
+
+## **Initial Questions**
+
+* The frequency of wildfire across the states and time.
+
+* Which cause of fire is the most frequent in the U.S.?
+
+* Is there a relationship among temprature, precipitation, cause of fires, size of fires and duration?
+
+* tbc
+
+## **Main results**
+
+
+
+## **Discussion**
+

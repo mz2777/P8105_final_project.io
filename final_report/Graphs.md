@@ -1,25 +1,43 @@
----
-title: "Exploratory Analysis"
-author: "Jiarui Fu"
-date: "12/1/2019"
-output: github_document
----
-
-```{r setup, include=FALSE}
-library(tidyverse)
-library(ggridges)
-library(gganimate)
-library(gifski)
-library(png)
-library(wordcloud)
-library(RColorBrewer)
-```
+Exploratory Analysis
+================
+Jiarui Fu
+12/1/2019
 
 ## R Markdown
 
-```{r}
+``` r
 fire = read_csv("./data/fire_0515.csv")
+```
 
+    ## Parsed with column specification:
+    ## cols(
+    ##   fire_year = col_double(),
+    ##   discovery_date = col_double(),
+    ##   discovery_time = col_character(),
+    ##   stat_cause_descr = col_character(),
+    ##   cont_date = col_double(),
+    ##   cont_time = col_character(),
+    ##   fire_size = col_double(),
+    ##   fire_size_class = col_character(),
+    ##   latitude = col_double(),
+    ##   longitude = col_double(),
+    ##   state = col_character(),
+    ##   county = col_double(),
+    ##   fips_code = col_character(),
+    ##   fips_name = col_character()
+    ## )
+
+    ## Warning: 660575 parsing failures.
+    ##   row    col expected actual                   file
+    ## 72832 county a double Mohave './data/fire_0515.csv'
+    ## 72833 county a double Mohave './data/fire_0515.csv'
+    ## 72834 county a double Mohave './data/fire_0515.csv'
+    ## 72835 county a double Mohave './data/fire_0515.csv'
+    ## 72836 county a double Mohave './data/fire_0515.csv'
+    ## ..... ...... ........ ...... ......................
+    ## See problems(...) for more details.
+
+``` r
 tidy_fire = 
   fire %>% 
   separate(cont_time, into = c("cont_hour","cont_min") ,sep = 2) %>% 
@@ -59,7 +77,11 @@ tidy_fire %>%
   coord_flip() +
   labs(x = "", y = "Number of Fires", title = "Wildfire Counts in the U.S. by Causes from 2005 to 2015") +
   viridis::scale_color_viridis() + theme_bw() + theme(legend.position = "none")
+```
 
+![](Graphs_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+
+``` r
 # animation: transition from year 2005 to year 2015, see the number of fires over 50 states
 new_table = 
   tidy_fire %>% 
@@ -85,7 +107,11 @@ p = base_graph +
   enter_fade() + exit_fade() + ease_aes("sine-in-out")
 
 animate(p)
+```
 
+![](Graphs_files/figure-gfm/unnamed-chunk-1-1.gif)<!-- -->
+
+``` r
 # distribution of duration vs fire size class, for different causes
 tidy_fire %>% 
   mutate(duration = duration / 60) %>% 
@@ -96,7 +122,16 @@ tidy_fire %>%
   labs(x = "Duration (hours)",
        y = "Fire Size Class",
        fill = "Causes")
+```
 
+    ## Picking joint bandwidth of 30.7
+
+    ## Warning: Removed 459603 rows containing non-finite values
+    ## (stat_density_ridges).
+
+![](Graphs_files/figure-gfm/unnamed-chunk-1-3.png)<!-- -->
+
+``` r
 # distribution of duration vs fire size, with different causes
 tidy_fire %>% 
   mutate(duration = duration / 60) %>% 
@@ -107,15 +142,53 @@ tidy_fire %>%
        y = "Fire Size",
        color = "Causes",
        size = "Fire Size") 
+```
 
+    ## Warning: Removed 458765 rows containing missing values (geom_point).
+
+![](Graphs_files/figure-gfm/unnamed-chunk-1-4.png)<!-- -->
+
+``` r
 # wordclouding: causes by count
 fire = 
   read_csv("data/fire_0515.csv") %>% 
   group_by(stat_cause_descr) %>% 
   summarise(n_cause = n())
+```
+
+    ## Parsed with column specification:
+    ## cols(
+    ##   fire_year = col_double(),
+    ##   discovery_date = col_double(),
+    ##   discovery_time = col_character(),
+    ##   stat_cause_descr = col_character(),
+    ##   cont_date = col_double(),
+    ##   cont_time = col_character(),
+    ##   fire_size = col_double(),
+    ##   fire_size_class = col_character(),
+    ##   latitude = col_double(),
+    ##   longitude = col_double(),
+    ##   state = col_character(),
+    ##   county = col_double(),
+    ##   fips_code = col_character(),
+    ##   fips_name = col_character()
+    ## )
+
+    ## Warning: 660575 parsing failures.
+    ##   row    col expected actual                 file
+    ## 72832 county a double Mohave 'data/fire_0515.csv'
+    ## 72833 county a double Mohave 'data/fire_0515.csv'
+    ## 72834 county a double Mohave 'data/fire_0515.csv'
+    ## 72835 county a double Mohave 'data/fire_0515.csv'
+    ## 72836 county a double Mohave 'data/fire_0515.csv'
+    ## ..... ...... ........ ...... ....................
+    ## See problems(...) for more details.
+
+``` r
 set.seed(555)
 p = wordcloud(words = fire$stat_cause_descr, freq = fire$n_cause, scale = c(3, .8), min.freq = 1,
           max.words=200, random.order=FALSE, rot.per=0.35, 
           colors=brewer.pal(8, "Dark2"))
 ```
 
+![](Graphs_files/figure-gfm/unnamed-chunk-1-5.png)<!-- -->

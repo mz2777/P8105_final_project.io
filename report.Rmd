@@ -1,0 +1,44 @@
+---
+title: "**Report**"
+author: "Sitong Cui, Jiarui Fu, Mengyu Zhang, Ziqi Zhou"
+date: "12/3/2019"
+output:
+  html_document: 
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## **Motivation**
+
+#### Wildfires in the U.S.
+
+* Cause
+
+* Losses
+
+* Policy
+
+[here](https://www.dosomething.org/us/facts/11-facts-about-wildfires)
+
+#### Goals of our Project
+
+* Visualizing the frequency of fires acrossing states and time from 2005 to 2015
+
+* tbc (about EDA)
+
+* The association among factors and duration of wildfires in CA
+
+## **Initial Questions**
+
+## **Data**
+
+## **Exploratory Analysis**
+
+## **Statistical Analysis**
+
+## **Discussion**
+
