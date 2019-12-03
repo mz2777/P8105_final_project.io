@@ -16,6 +16,8 @@ Based on the purpose of effectively preventing wildfires, our group work on the 
 
 * 1.88 Million US Wildfires.24 years of geo-referenced wildfire records   [here](https://www.kaggle.com/rtatman/188-million-us-wildfires)
 
+* NOAA Weather Data
+
 ## **Initial Questions**
 
 * The frequency of wildfire across the states and time.
