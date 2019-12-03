@@ -1,20 +1,27 @@
----
-title: "Final Project Data Clean"
-author: "Ziqi Zhou"
-date: "12/02/2019"
-output: github_document
----
+Final Project Data Clean
+================
+Ziqi Zhou
+12/02/2019
 
-```{r setup, include = FALSE}
-library(tidyverse)
-```
 ### Clean Data
-```{r roughly data cleaning, message = FALSE}
+
+``` r
 fire = read_csv("./data/fire_0515.csv")
 ```
 
+    ## Warning: 660575 parsing failures.
+    ##   row    col expected actual                   file
+    ## 72832 county a double Mohave './data/fire_0515.csv'
+    ## 72833 county a double Mohave './data/fire_0515.csv'
+    ## 72834 county a double Mohave './data/fire_0515.csv'
+    ## 72835 county a double Mohave './data/fire_0515.csv'
+    ## 72836 county a double Mohave './data/fire_0515.csv'
+    ## ..... ...... ........ ...... ......................
+    ## See problems(...) for more details.
+
 select useful columns
-```{r}
+
+``` r
 tidy_fire = 
   fire %>% 
   separate(cont_time, into = c("cont_hour","cont_min") ,sep = 2) %>% 
@@ -26,7 +33,8 @@ tidy_fire =
 ```
 
 calculate duration
-```{r}
+
+``` r
 state.abb = append(state.abb, c("DC", "PR"))
 state.name = append(state.name, c("District of Columbia", "Puerto Rico"))
 
@@ -50,15 +58,3 @@ tidy_fire =
          stat_cause_descr = as.factor(stat_cause_descr),
          srat_cause_descr = relevel(stat_cause_descr,ref = "Missing/Undefined"))
 ```
-
-
-
-
-
-
-
-
-
-
-
-
