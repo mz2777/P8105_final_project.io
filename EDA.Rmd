@@ -68,7 +68,7 @@ tidy_fire =
   mutate(fips_name = tolower(fips_name),
          state = fct_inorder(state),
          fire_size_class = fct_inorder(fire_size_class),
-         region = state.name[match(state, state.abb)])
+         region = state.name[match(state, state.abb)])  
 ```
 
 ## EDA
@@ -127,25 +127,6 @@ ggplotly(heatmap_plot + theme(legend.position = "none"))
 
 
 top cause over time
-
-```{r}
-cause_rank = 
-  tidy_fire %>% 
-  group_by(stat_cause_descr,fire_year) %>% 
-  summarize(n = n()) %>% 
-  ungroup() %>% 
-  group_by(fire_year) %>% 
-  mutate(cause_rank = min_rank(desc(n))) %>% 
-  arrange(fire_year) %>% 
-  filter(cause_rank ==1) 
-  
-cause_rank %>% 
-  ggplot(aes(x = fire_year, y = n, fill = stat_cause_descr)) + 
-  geom_col() 
-
-```
-
-
 
 ```{r}
 state_map <- map_data('state')
