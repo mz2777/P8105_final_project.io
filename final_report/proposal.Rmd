@@ -1,5 +1,5 @@
 ---
-title: "proposal"
+title: "Proposal"
 date: 12/02/2019
 output: html_document
 ---
@@ -19,20 +19,14 @@ Topic: 2005-2015 US Wildfires
 
 ## Motivation
 
-Wildfire is dangerous and needs people’s enough attention because of its uncontrollability and destructive effects. At every year, wildfire leads to big financial loss and kills many lives. Moreover, the environment pollution due to wildfire is far more severe than wildfire itself. If there is any approach that helps us effectively prevent wildfires, then we can save our lives and avoid many big losses and destructions. 
+Wildfire is dangerous and needs people’s enough attention because of its uncontrollability and destructive effects. Every year, wildfire leads to big financial loss and kills many lives. Moreover, the environment pollution due to wildfire is far more severe than wildfire itself. If there is any approach that helps us effectively prevent wildfires, then we can save our lives and avoid many big losses and destructions. 
 
 Based on the purpose of effectively preventing wildfires, our group work on the dataset, “1.88 Million US Wildfires-24 years of geo-referenced wildfire records”, and try to discover some potential trends of wildfires. 
 
-
-***
-
-
 ## Intended Final Product
 
-shiny APP which can show deographical distribution (maps) of wildfires in US from 2009 to 2015, and in both 2010 and 2015. 
+Shiny APP which can show deographical distribution (maps) of wildfires in US from 2009 to 2015, and in both 2010 and 2015. 
 
-
-***
 
 
 
@@ -54,8 +48,6 @@ shiny APP which can show deographical distribution (maps) of wildfires in US fro
 * hard to calculate wildfire duration
 * difficulty of building websites
 
-***
-
 
 ### Planned Analysis
 * Which state has most wildfires
@@ -66,7 +58,6 @@ shiny APP which can show deographical distribution (maps) of wildfires in US fro
 * ridge plot, bubble plot, density polt, etc.  
 * The map showing the wildfire annual distribution in the U.S.
 
-***
 
 ## Planned Timeline
 
