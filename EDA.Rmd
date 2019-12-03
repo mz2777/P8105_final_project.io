@@ -1,7 +1,12 @@
 ---
-title: "EDA"
+title: "Explortary Analysis"
 
-output: html_document
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: hide
+---
 ---
 
 ```{r setup, include = FALSE}
@@ -32,13 +37,12 @@ library(RColorBrewer)
 
 theme_set(theme_minimal() + theme(legend.position = "bottom"))
 ```
-### Clean Data
-```{r roughly data cleaning, message = FALSE}
-fire = read_csv("./final_report/data/fire_0515.csv")
-```
 
-select useful columns
-```{r}
+```{r roughly data cleaning, message = FALSE}
+# clean data
+fire = read_csv("./final_report/data/fire_0515.csv")
+
+# select useful columns
 tidy_fire = 
   fire %>% 
   separate(cont_time, into = c("cont_hour","cont_min") ,sep = 2) %>% 
@@ -49,8 +53,9 @@ tidy_fire =
          disc_min = as.numeric(disc_min))
 ```
 
-calculate duration
+
 ```{r}
+# calculate duration
 state.abb = append(state.abb, c("DC", "PR"))
 state.name = append(state.name, c("District of Columbia", "Puerto Rico"))
 
@@ -73,7 +78,7 @@ tidy_fire =
          region = state.name[match(state, state.abb)])  
 ```
 
-## EDA
+## The Number of Wildfires Over Ten Years 
 ```{r}
 count_overtime = 
   tidy_fire %>% 
@@ -128,7 +133,6 @@ ggplotly(heatmap_plot + theme(legend.position = "none"))
 
 
 
-top cause over time
 
 ```{r}
 state_map <- map_data('state')
@@ -174,7 +178,8 @@ tidy_fire %>%
     ggtitle("Wildfires per Square Mile by 2005-2015") + 
     theme(plot.title = element_text(hjust = 0.5))
 ```
-
+## Causes of Wildfires
+top cause over time
 Wordclouding cause
 ```{r}
 fire = 
@@ -199,6 +204,7 @@ tidy_fire %>%
   viridis::scale_color_viridis() + theme_bw() + theme(legend.position = "none")
 ```
 
+## Association between Duration and Fire Size
 Distribution of duration for different fire size class
 ```{r}
 tidy_fire %>% 
