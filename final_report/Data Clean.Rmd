@@ -10,7 +10,7 @@ library(tidyverse)
 ```
 ### Clean Data
 ```{r roughly data cleaning, message = FALSE}
-fire = read_csv("./Final report/data/fire_0515.csv")
+fire = read_csv("./final_report/data/fire_0515.csv")
 ```
 
 select useful columns
