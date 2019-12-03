@@ -27,8 +27,8 @@ tidy_fire =
 
 calculate duration
 ```{r}
-state.abb <- append(state.abb, c("DC", "PR"))
-state.name <- append(state.name, c("District of Columbia", "Puerto Rico"))
+state.abb = append(state.abb, c("DC", "PR"))
+state.name = append(state.name, c("District of Columbia", "Puerto Rico"))
 
 tidy_fire = 
   tidy_fire %>% 
