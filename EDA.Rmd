@@ -175,6 +175,18 @@ tidy_fire %>%
     theme(plot.title = element_text(hjust = 0.5))
 ```
 
+Wordclouding cause
+```{r}
+fire = 
+  fire %>% 
+  group_by(stat_cause_descr) %>% 
+  summarise(n_cause = n())
+set.seed(555)
+p = wordcloud(words = fire$stat_cause_descr, freq = fire$n_cause, scale = c(3, .8), min.freq = 1,
+          max.words=200, random.order=FALSE, rot.per=0.35, 
+          colors=brewer.pal(8, "Dark2"))
+```
+
 Cause ranking
 ```{r}
 tidy_fire %>% 
@@ -186,7 +198,6 @@ tidy_fire %>%
   labs(x = "", y = "Number of Fires", title = "Wildfire Counts in the U.S. by Causes from 2005 to 2015") +
   viridis::scale_color_viridis() + theme_bw() + theme(legend.position = "none")
 ```
-
 
 Distribution of duration for different fire size class
 ```{r}
@@ -201,17 +212,6 @@ tidy_fire %>%
   theme_bw()
 ```
 
-Wordclouding cause
-```{r}
-fire = 
-  fire %>% 
-  group_by(stat_cause_descr) %>% 
-  summarise(n_cause = n())
-set.seed(555)
-p = wordcloud(words = fire$stat_cause_descr, freq = fire$n_cause, scale = c(3, .8), min.freq = 1,
-          max.words=200, random.order=FALSE, rot.per=0.35, 
-          colors=brewer.pal(8, "Dark2"))
-```
 
 
 
