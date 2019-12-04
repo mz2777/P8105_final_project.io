@@ -17,7 +17,6 @@ knitr::opts_chunk$set(
   fig.height = 6,
   out.width = "90%"
 )
-library(leaflet)
 library(lubridate)
 library(ggExtra)
 library(plotly)
@@ -109,6 +108,27 @@ At first, we were interested in exploring the correlation between wildfire's occ
 
 * **Read raw data**
 
+```{r eval = FALSE}
+## read sqlite raw file, 758.9Mb
+raw = dbConnect(SQLite(), "./data/FPA_FOD_20170508.sqlite")
+fires = tbl(raw, "Fires") %>% collect()
+dbDisconnect(raw)
+
+fires = fires %>% 
+  janitor::clean_names() %>% 
+  select(fire_year, discovery_date, discovery_time, stat_cause_descr,
+         cont_date, cont_time, fire_size, fire_size_class,
+         latitude, longitude, state, county, fips_code, fips_name)
+
+## constricted the data between 2005 and 2015 for interest
+
+fire_0515 = fires %>% 
+  filter(fire_year %in% c(2005:2015))
+
+## save the dataframe into a csv file
+
+write_csv(fire_0515, path = "./data/fire_0515.csv")
+```
 
 
 * **Clean data**
@@ -185,11 +205,9 @@ fig_1 = count_overtime %>%
 ggplotly(fig_1)
 ```
 
-
-
 *  **Heatmap for Trend over Time.**
 
-The figure below is the heatmap for trend over time.We could see in the plot that the wildfire happened a lot around March in 2006 and Febrary in 2008 etc.
+The figure below is the heatmap for trend over time.We could see in the plot that the wildfire happened a lot around March in 2006 and February in 2008 etc.
 
 ```{r}
 heatmap_plot = tidy_fire %>%
@@ -228,7 +246,7 @@ ggplotly(heatmap_plot + theme(legend.position = "none"))
 
 * **Geography for the Number of Wildfire in U.S. during 2005 - 2015**
 
-The figure below shows the difference of the number of wildfires betwwen different states. It is obviously that the Texas and California had the highest number of wildfires during 2005 - 2015.
+The figure below shows the difference of the number of wildfires between different states. It is obviously that the Texas and California had the highest number of wildfires during 2005 - 2015.
 
 ```{r}
 state_map <- map_data('state')
@@ -249,7 +267,7 @@ tidy_fire %>%
     theme(plot.title = element_text(hjust = 0.5), legend.position = "bottom")
 ```
 
-    **Top 10 states experienced most wildfires per year**
+* **Top 10 states experienced most wildfires per year**
 The graph below illustrates top 10 states that experienced most wildfires per year during the 10 years. It validated that Texas and California had most fires per year.
 
 ```{r}
@@ -355,7 +373,7 @@ title( "Fig 6: Wordclouding of the top cause during 10 years")
   
 * **Cause ranking**
 
-The figure below shows that ranking of cause. We counted how many cases dued to specific cause and ranked them. It is clear that Debris Burning is the most common cause.
+The figure below shows that ranking of cause. We counted how many cases due to specific cause and ranked them. It is clear that Debris Burning is the most common cause.
 
 ```{r}
 rank_cause = tidy_fire %>% 
@@ -397,14 +415,15 @@ ggplotly(size_duration)
 
 ## **Statistical Analysis**
 
-## **Discussion**
-We recognize that wildfires have various causes and the severity (size, duration...) of wildfires differ by a number of factors; thus, the final model that we present may not be 
+## **Results and Discussion**
+In general, the number of wildfires in the U.S. from 2005 to 2015 is decreasing. Wildfires are more likely to happen from February to August. Texas had the highest number of wildfires during 2005 - 2015, while surprisingly, New York had the highest number of wildfires per square mile. The latter one should be more interesting because they will allow us to more directly compare wildfire across states. Plus, we find the most common cause to be debris burning. For wildfires with the highest burning sizes, they also have the longest duration. 
 
+<<<<<<< HEAD
+We recognize that wildfires have various causes and the severity (size, duration, etc.) of wildfires differ by a number of factors; thus, the final result that we present here may not be as accurate and comprehensive as we hoped it to be. Furthermore, as climate change continues to intensify wildfires, it is everyone's responsibility to understand and learn how to prevent wildfires from happening and protect nature and ourselves. In light of the above, we shall continue our quest to correctly and timely predict future wildfires, using extensive datasets with advanced predictive modelling techniques. 
+=======
+We recognize that wildfires have various causes and the severity (size, duration, etc.) of wildfires differ by a number of factors; thus, the final result that we present here may not be as accurate and comprehensive as we hoped it to be. Furthermore, as climate change continues to intensify wildfires, it is everyone's responsibility to understand and learn how to prevent wildfires from happening and protect nature and ourselves. Furthermore, we shall continue our quest to correctly and timely predict future wildfires, using extensive dataset with advanced predictive modelling techniques. 
+>>>>>>> 84eead5743feb2ff91cf5636f331b10e3209fc01
 
-As climate change continues to intensify wildfires, it is everyone's responbility to understand and learn how to prevent wildfires from happening and protect nature and ourselves. Futhermore, we shall continue our quest to correctly and timely predict future wildfires, using extensive dataset with advanced predictive modelling techniques. 
-
-
-In general, the number of wildfires in the U.S. from 2005 to 2015 is decreasing. Wildfires are more likely to happen from February to August. Texas had the highest number of wildfires during 2005 - 2015, while surpisingly, New York had the highest number of wildfires per square mile. The latter one should be more interesting because they will allow us to more directly compare wildfire across states. Plus, we found that the most common reason is debris burning. For wildfires with highest buring size, they also have longest duration. 
 
 
 
