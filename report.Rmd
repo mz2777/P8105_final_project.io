@@ -13,24 +13,31 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## **Motivation**
-
+Wildfire hazards 
 #### Wildfires in the U.S.
-
+Here are some facts about wildfires in the U.S.   
 * Cause
+According to the U.S. Department of Interior, about 90 percent of wildfires in the United States are started by human, resulting from unattended campfires, debris burnings, downed equipments, negligently discarded cigarettes and intentional acts of arson, etc. Verisk's 2017 Wildfire Risk Analysis showed that at present, 4.5 million U.S. homes were identified as having high or extreme high risk of wildfire; more than 2 million homes come from California. The nature (lightning or lava) and climate change, is found to be responsible for the remaining 10 percent.   
+* Loss  
+In October 2019, significant fires broke out in California and led to the evacuation of over 200,000 people, which were declared as a state of emergency. The Kincade Fire in Sonoma County has burned over 76,000 acres. The Getty Fire in Los Angeles caused over 7000 residences to be placed in a mandatory evacuation zone.    
 
-* Losses
+In 2018, there were 58,083 wildfires where 8.8 million acres were burned.   
 
+In 2017, there were 71,499 wildfires where over 10 million acres were burned.   
 * Policy
-
-[here](https://www.dosomething.org/us/facts/11-facts-about-wildfires)
+The governmental policy on has shifted from 
 
 #### Goals of our Project
+Therefore, considering these massive, devastating wildfires and their catastropic effects on human communities and the environment, we decide to investigate the following research questions to discover if there's any clear trend and how to better prevent and control wildfires. We also build a linear regression model to predict the relationship between fire duration and other potential risk factors. We would like to examine:   
+* The frequency of fires acrossing states over time from 2005 to 2015 and the top ten states with the largest number of wildfires in the ten-year period   
 
-* Visualizing the frequency of fires acrossing states and time from 2005 to 2015
+* The geographical distribution of wildfires across states with the number of wildfires per squre mile
 
-* tbc (about EDA)
+* The most common causes of wildfires    
 
-* The association among factors and duration of wildfires in CA
+* The relationship between duration and fire size
+
+* The association among a number of factors and the duration of wildfires in Riverside county, California
 
 ## **Initial Questions**
 
@@ -65,4 +72,5 @@ knitr::opts_chunk$set(echo = TRUE)
 ## **Statistical Analysis**
 
 ## **Discussion**
+We recognize that wildfire 
 
