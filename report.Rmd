@@ -415,7 +415,7 @@ ggplotly(size_duration)
 
 ## **Statistical Analysis**
 
-## **Discussion**
+## **Results and Discussion**
 In general, the number of wildfires in the U.S. from 2005 to 2015 is decreasing. Wildfires are more likely to happen from February to August. Texas had the highest number of wildfires during 2005 - 2015, while surprisingly, New York had the highest number of wildfires per square mile. The latter one should be more interesting because they will allow us to more directly compare wildfire across states. Plus, we find the most common cause to be debris burning. For wildfires with the highest burning sizes, they also have the longest duration. 
 
 <<<<<<< HEAD
