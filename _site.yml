@@ -6,7 +6,7 @@ navbar:
   right: 
     - text: "Overview"
       href: overview.html
-    - text: "Explortary Analysis"
+    - text: "Exploratory Analysis"
       href: EDA.html
     - text: "Statistical Analysis"
       href: .html
