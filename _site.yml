@@ -7,7 +7,7 @@ navbar:
     - text: "Overview"
       href: overview.html
     - text: "Explortary Analysis"
-      href: eda.html
+      href: EDA.html
     - text: "Statistical Analysis"
       href: .html
     - text: Shiny Apps
