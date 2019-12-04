@@ -6,10 +6,39 @@ output:
   html_document: 
     toc: true
     toc_float: true
+    code_folding: hide
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+	fig.width = 8, 
+  fig.height = 6,
+  out.width = "90%"
+)
+library(leaflet)
+library(lubridate)
+library(ggExtra)
+library(plotly)
+
+library(maps)
+library(mapdata)
+library(ggthemes)
+library(mapproj)
+library(ggthemes)
+library(gganimate)
+
+library(viridis)
+
+library(wordcloud)
+library(RColorBrewer)
+library(tm)
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
+library(tidyverse)
+library(RSQLite)
 ```
 
 ## **Motivation**
@@ -73,7 +102,319 @@ At first, we were interested in exploring the correlation between wildfire's occ
 
   + `STAT_CAUSE_DESCR` = Description of the cause of the fire.
 
+### Read and clean data
+
+* **Read raw data**
+
+```{r eval = FALSE}
+## read sqlite raw file, 758.9Mb
+raw = dbConnect(SQLite(), "./data/FPA_FOD_20170508.sqlite")
+fires = tbl(raw, "Fires") %>% collect()
+dbDisconnect(raw)
+
+fires = fires %>% 
+  janitor::clean_names() %>% 
+  select(fire_year, discovery_date, discovery_time, stat_cause_descr,
+         cont_date, cont_time, fire_size, fire_size_class,
+         latitude, longitude, state, county, fips_code, fips_name)
+
+## constricted the data between 2005 and 2015 for interest
+
+fire_0515 = fires %>% 
+  filter(fire_year %in% c(2005:2015))
+
+## save the dataframe into a csv file
+
+write_csv(fire_0515, path = "./data/fire_0515.csv")
+```
+
+* **Clean data**
+
+```{r roughly data cleaning, message = FALSE}
+fire = read_csv("./final_report//data/fire_0515.csv")
+```
+
+```{r}
+#select useful columns
+tidy_fire = 
+  fire %>% 
+  separate(cont_time, into = c("cont_hour","cont_min") ,sep = 2) %>% 
+  separate(discovery_time, into = c("disc_hour","disc_min") ,sep = 2) %>% 
+  mutate(cont_hour = as.numeric(cont_hour),
+         cont_min = as.numeric(cont_min),
+         disc_hour = as.numeric(disc_hour),
+         disc_min = as.numeric(disc_min))
+```
+
+
+```{r}
+#calculate duration
+state.abb = append(state.abb, c("DC", "PR"))
+state.name = append(state.name, c("District of Columbia", "Puerto Rico"))
+
+tidy_fire = 
+  tidy_fire %>% 
+  # change julian days
+  mutate(discovery_date = as.Date(discovery_date - 2458014.5, origin = '2017-09-18'),
+         cont_date = as.Date(cont_date - 2458014.5, origin = '2017-09-18'),
+         duration_day = as.numeric(difftime(cont_date, discovery_date, units = "days"))) %>% 
+  mutate(
+    duration_hour = cont_hour - disc_hour,
+    duration_min = cont_min - disc_min,
+    duration = duration_day * 24 + duration_hour + duration_min / 60
+  ) %>% 
+  select(-duration_day, -duration_hour,-duration_min) %>% 
+  mutate(fips_name = tolower(fips_name),
+         state = fct_inorder(state),
+         fire_size_class = fct_inorder(fire_size_class),
+         region = state.name[match(state, state.abb)],
+         stat_cause_descr = as.factor(stat_cause_descr),
+         srat_cause_descr = relevel(stat_cause_descr,ref = "Missing/Undefined"))
+```
+
+
 ## **Exploratory Analysis**
+
+**First, we would like to see whether there is any noticeable trends in time or noticeable difference between different states. Also, we would like to more which is the most common cause during 10 years. What’s more, we would like to explore whether the fire size and the fire burning duration had some relationship.**
+
+* **Trends in Time**
+
+  * **The Number of Wildfires Over Ten Years**
+
+The figure below shows that the number of wildfires change over ten years. The range of the number of wildfires per year is between 64,000 and 115,000 from 2005 to 2015. 
+
+We could see that there are two peaks in this plot. One is 2006 which had about 114,000 wildfires and another is 2011 which had about 90,500 wildfires. Basically, the trend went down from 2005 to 2015.
+
+```{r}
+count_overtime = 
+  tidy_fire %>% 
+  group_by(fire_year) %>% 
+  summarize(cases = n())
+
+fig_1 = count_overtime %>% 
+  ggplot(aes(x = fire_year, y = cases)) + 
+  geom_point() + geom_line() + 
+  labs(
+    title = "Fig 1: The number of wildfires trends over time in U.S. ",
+    x = "Year",
+    y = "Total wildfire cases in U.S.",
+    caption = "Data from 2005 to 2015"
+  ) + 
+  scale_x_continuous(
+    breaks = c(2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015), 
+    labels = c("2005","2006","2007","2008","2009","2010","2011","2012","2013","2014","2015"))
+
+ggplotly(fig_1)
+```
+
+
+
+  *  **Heatmap for Trend over Time.**
+
+The figure below is the heatmap for trend over time.We could see in the plot that the wildfire happened a lot around March in 2006 and Febrary in 2008 etc.
+
+```{r}
+heatmap_plot = tidy_fire %>%
+  separate(discovery_date, into = c('year', 'month', 'day'), sep = "-") %>% 
+  mutate(month = month.abb[as.numeric(month)],
+         month = fct_rev(factor(month, levels = month.abb))) %>% 
+  group_by(year, month, day) %>% 
+  summarise(n_fires = n()) %>% 
+  mutate(day = as.numeric(day))
+ 
+heatmap_plot = heatmap_plot %>% 
+  ggplot(aes(x = day, y = month, fill = n_fires))+
+  geom_tile(color = "white",size = 0.1) + 
+  scale_fill_viridis(name = "Number of Wildfires",option = "C") + 
+  facet_grid(.~ year) +
+  scale_x_continuous(breaks = c(1,10,20,31)) + 
+  theme_minimal(base_size = 8) + 
+  labs(title = "Fig 2: Number of Wildfires from 2005 to 2015", x = "Day", y = "Month") + 
+  theme(legend.position = "bottom")+
+  theme(plot.title = element_text(size = 14))+
+  theme(axis.text.y = element_text(size = 6)) +
+  theme(strip.background = element_rect(colour = "white"))+
+  theme(plot.title = element_text(hjust = 0))+
+  theme(axis.ticks = element_blank())+
+  theme(axis.text = element_text(size = 7))+
+  theme(legend.title = element_text(size = 8))+
+  theme(legend.text = element_text(size = 6))+
+  removeGrid()
+
+ggplotly(heatmap_plot + theme(legend.position = "none"))
+
+```
+
+
+* **Trends in States**
+
+  * **Geography for the Number of Wildfire in U.S. during 2005 - 2015**
+
+The figure below shows the difference of the number of wildfires betwwen different states. It is obviously that the Texas and California had the highest number of wildfires during 2005 - 2015.
+
+```{r}
+state_map <- map_data('state')
+tidy_fire %>% 
+    group_by(region) %>%
+    summarize(n = n()) %>%
+    mutate(region = tolower(region)) %>% 
+    right_join(state_map, by = 'region') %>%
+    ggplot(aes(x = long, y = lat, group = group, fill = n)) + 
+    geom_polygon() + 
+    geom_path(color = 'white') + 
+    scale_fill_continuous(low = "orange", 
+                          high = "darkred",
+                          name = 'The number of fire during 2005 to 2015') +
+    theme_map() + 
+    labs(title = "Fig 3: The number of wildfire in U.S. during 2005 to 2015") + 
+    coord_map('albers', lat0=30, lat1=40) + 
+    theme(plot.title = element_text(hjust = 0.5), legend.position = "bottom")
+```
+
+  * **Top 10 states experienced most wildfires per year**
+The graph below illustrates top 10 states that experienced most wildfires per year during the 10 years. It validated that Texas and California had most fires per year.
+
+```{r}
+## clean a new dataset with ranking of numbers and adjusted numbers
+fire_fmt = tidy_fire %>%
+  group_by(fire_year, region) %>% 
+  summarise(n = n()) %>% 
+  mutate(rank = rank(-n),
+         Value_rel = n/n[rank == 1],
+         Value_lbl = paste0(" ",n)) %>% 
+  filter(rank <= 10)
+
+## form multiple static plots
+staticplot = ggplot(fire_fmt, aes(rank, group = region, 
+                fill = as.factor(region), color = as.factor(region))) +
+  geom_tile(aes(y = n / 2,
+                height = n,
+                width = 0.9), alpha = 0.8, color = NA) +
+  geom_text(aes(y = 0, label = paste(region, " ")), vjust = 0.2, hjust = 1) +
+  geom_text(aes(y = n,label = Value_lbl, hjust = 0)) +
+  coord_flip(clip = "off", expand = FALSE) +
+  scale_x_reverse() +
+  scale_fill_viridis_d(option = "B") +
+  scale_color_viridis_d(option = "B") +
+  theme_minimal() +
+  theme(axis.line = element_blank(),
+        axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        legend.position = "none",
+        panel.background = element_blank(),
+        panel.border = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.grid.major.x = element_line( size = .1, color = "grey" ),
+        panel.grid.minor.x = element_line( size = .1, color = "grey" ),
+        plot.title = element_text(size = 25, hjust = 0.5, face = "bold", vjust = 2),
+        plot.subtitle = element_text(size = 18, hjust = 0.5, face = "italic", color = "grey"),
+        plot.background = element_blank(),
+        plot.margin = margin(2,2, 2, 4, "cm"))
+
+## convert static plots to animated ones
+anim = staticplot + 
+  transition_states(fire_year, transition_length = 4, state_length = 1) +
+  ease_aes('sine-in-out') +
+  labs(title = 'Fig 4. Number of fires per Year : {closest_state}',
+       subtitle = "Top 10 States")  
+
+animate(anim, 200, fps = 15,  width = 680, height = 560)
+```
+
+  * **Geography for the per Square Mile**
+
+The figure below shows that the difference of the number of wildfire per square mile between different states during 10 years. We could found that Texas was not the top 1 in this plot but the top 1 is New York. We supposed that the Texas had the highest number of wildfire during 10 years because they had largest area.
+
+```{r}
+state.x77 <- state.x77 %>%
+    as.data.frame() %>%
+    mutate(region = tolower(rownames(state.x77)))
+
+tidy_fire %>% 
+  mutate(region = tolower(region)) %>% 
+    group_by(region) %>%
+    summarize(n_fires = n()) %>%
+    left_join(state.x77, by = 'region') %>%
+    mutate(fires_per_sqm = n_fires / Area) %>%
+    right_join(state_map, by = 'region') %>%
+    ggplot(aes(x = long, y = lat, group = group, fill = fires_per_sqm)) + 
+    geom_polygon() + 
+    geom_path(color = 'white') + 
+    scale_fill_continuous(low = "orange", 
+                          high = "darkred",
+                          name = 'Fires per square mile') + 
+    theme_map() + 
+    coord_map('albers', lat0=30, lat1=40) + 
+    ggtitle("Fig 5: Wildfires per Square Mile by 2005-2015") + 
+    theme(plot.title = element_text(hjust = 0.5), legend.position = "bottom") 
+
+```
+
+* **Causes of Wildfires**
+
+  * **Wordclouding of causes**
+
+The figure below is the wordclouding of the top cause during 10 years. We could see that Debris Burning is the top cause during 10 years. So we would like to suggest that people might need to pay more attention on the debris burning which often caused serious wildfires.
+
+```{r}
+fire = 
+  fire %>% 
+  group_by(stat_cause_descr) %>% 
+  summarise(n_cause = n())
+set.seed(555)
+
+wordcloud(words = fire$stat_cause_descr, freq = fire$n_cause, scale = c(3, .8), min.freq = 1,
+          max.words=200, random.order=FALSE, rot.per=0.35, 
+          colors=brewer.pal(8, "Dark2"))
+
+title( "Fig 6: Wordclouding of the top cause during 10 years")
+
+```
+  * **Cause ranking**
+
+The figure below shows that ranking of cause. We counted how many cases dued to specific cause and ranked them. It is clear that Debris Burning is the most common cause.
+
+```{r}
+rank_cause = tidy_fire %>% 
+  group_by(stat_cause_descr) %>% 
+  summarize(count = n()) %>% 
+  mutate(stat_cause_descr =fct_reorder(stat_cause_descr, count)) %>% 
+  mutate(cause = stat_cause_descr) %>% 
+  select(-stat_cause_descr) %>% 
+  ggplot(aes(x = cause, y = count)) +
+  geom_bar(stat = "identity", aes(fill = cause), alpha=.6, width=.4) +
+  coord_flip() +
+  labs(x = "", y = "Number of Fires", title = "Fig 7: Wildfire Counts in the U.S. by Causes from 2005 to 2015") +
+  viridis::scale_color_viridis() + theme_bw() + theme(legend.position = "none")
+
+ggplotly(rank_cause)
+```
+
+* **Association between Duration and Fire Size**
+
+The figure below shows that the distribution of duration（less than 48 hours) for different fire size class. We strict the duration to see the trend clear, We could see that the curve always concentrated in duration = 0. This is because information bias. There were lots of data whose duration is equal to zero and we had no idea about what the fact was. 
+
+Regardless the duration = 0, since the fire class A is the smallest size, we could see that it had short duration compared to the higher fire class like F or G. So we assumed that there was some relationship between fire burning duration and the fire size. So we did some model about it in our analysis.
+
+```{r}
+size_duration = 
+  tidy_fire %>% 
+  mutate(fire_size_class = fct_relevel(fire_size_class, c("A", "B", "C", "D", "E", "F", "G"))) %>% 
+  drop_na(duration) %>% 
+  filter(duration < 48) %>%
+  filter(duration != 0) %>%  
+  ggplot(aes(x = duration, fill = fire_size_class)) +
+  geom_density(alpha = 0.4) +
+  labs(x = "Duration (hours)", fill = "Fire Size Class",
+       title = "Fig 8: Distribution of duration for different fire size class") +
+  theme_bw() 
+
+ggplotly(size_duration)
+```
 
 ## **Statistical Analysis**
 
