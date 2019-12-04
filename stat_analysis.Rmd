@@ -14,15 +14,12 @@ library(rnoaa)
 library(viridis)
 library(broom)
 library(knitr)
-
 options(
   ggplot2.continuous.colour = "viridis",
   ggplot2.continuous.fill = "viridis"
 )
-
 scale_colour_discrete = scale_colour_viridis_d
 scale_fill_discrete = scale_fill_viridis_d
-
 theme_set(theme_minimal() + theme(legend.position = "bottom"))
 ```
 
@@ -65,7 +62,6 @@ As stated previously, we noticed a trend of increased size with accumulated fire
 ```{r}
 ## linear model between size, duration and cause
 model_1 = lm(fire_size ~ duration + cause, data = tidy_fire)
-
 model_1 %>% 
   tidy() %>% 
   kable(digits = 3,
@@ -74,7 +70,7 @@ model_1 %>%
 
 ## Association between temperature and the number of fires
 
-We are also interested to know whether there would be more fires when temperature was higher. We retrieved daily weather data using `rnoaa` package at county level. We have selected 2015 as the target year for analysis since we focused on association between number of fires each day and daily temperature. Additionally, daily temperature distribution was relatively similar across years. We have also limited analysis to counties with most fires in 2015 in states where fires happened most frequently during these 10 years (California and Texas according to previous analysis): Riverside(CA) and Dallas(TX).
+We are also interested to know whether there would be more fires when temperature was higher. We retrieved daily weather data using `rnoaa` package at county level. We have limited analysis to two counties with the most fires in 2015 in states where fires happened most frequently during these 10 years (California and Texas according to previous analysis): Riverside(CA) and Dallas(TX).
 
 ```{r, message = FALSE, warning = FALSE}
 ## subset the dataset to only include data from 2015 in TX and CA
@@ -84,7 +80,7 @@ fire_15 = tidy_fire %>%
   drop_na(fips_code, fips_name) %>% 
   mutate(county = fips_name)
   
-## find top 1 county in each state with most fires in 2015
+## find top 1 county in each state with the most fires in 2015
 fire_15 %>% 
   group_by(region, county) %>% 
   summarise(count = n()) %>% 
@@ -93,7 +89,7 @@ fire_15 %>%
   mutate(rank = rank(-count)) %>% 
   filter(rank == 1) %>% 
   select(-rank) %>% 
-  kable(caption = "Counties with most count of fires in 2015")
+  kable(caption = "Counties with the most count of fires in 2015")
 
 ## subset further to focus on the above two counties
 fire_15 = fire_15 %>% 
@@ -112,9 +108,9 @@ station_id = stations %>%
          element == "TMAX") %>% 
   pull(id)
 
-## retrieve weather data in each station in 2015
+## retrieve weather data in each station between 2005 and 2015
 weather_15 = meteo_pull_monitors(station_id,
-                                  date_min = "2015-01-01", 
+                                  date_min = "2005-01-01", 
                                   date_max = "2015-12-31",
                                   var = c("PRCP", "TMAX", "TMIN")) %>% 
   mutate(tmax = tmax / 10,
@@ -124,13 +120,15 @@ weather_15 = meteo_pull_monitors(station_id,
                             "USW00003171" = "riverside",
                             "USW00013960" = "dallas"))
 
-## join the weather data with cleaned dataset
+## join the weather data with cleaned dataset (2015)
 fire_15_weather = left_join(fire_15, weather_15, by = c("date", "county"))
 ```
 
-### Distribution of mean temperature and fires
+### Visualization
 
-The below graph illustrates distribution of daily mean temperature and number of fires per day in 2015. The points represents daily mean temperature which roughly follows a bell-shape curve. The histogram below shows number of fires per day. Both variables showed a similar pattern of distribution. In addition, precipitation is unlikely to be associated with number of fires with such insufficient data.
+* Distribution of daily mean temperature and count of fires in 2015
+
+The below graph illustrates distribution of daily mean temperature and number of fires per day in 2015. Since temperature distribution is similar between different year, we selected one year (2015) for visualization. The points above represents daily mean temperature which roughly follows a bell-shape curve. The histogram below shows the number of fires per day. Both variables showed a similar pattern of distribution. In addition, precipitation is unlikely to be associated with number of fires with such insufficient data.
 
 ```{r, message = FALSE}
 p1 = fire_15_weather %>% 
@@ -151,29 +149,32 @@ p1
 
 ### Linear Regression
 
-We build a linear regression model with number of fires and mean daily temperature. There is significant association (p-value < 0.001) between the two. For every 1°C increase in daily mean temperature, the average number of fires per day will increase by 0.074.
+We build a linear regression model with number of fires per month and mean monthly temperature. There is a significant association (p-value < 0.001) between the two. For every 1°C increase in monthly mean temperature, the total number of fires per month will increase by 3.820 on average.
 
 ```{r}
-## form a new dataset with daily number of fires
-fire_15_count = fire_15 %>% 
+## form a new dataset of count of fires in "riverside" and "dallas"
+fire_rd = tidy_fire %>% 
+  mutate(county = fips_name) %>% 
+  filter(state == "CA" | state == "TX") %>% 
+  filter(county == "riverside" | county == "dallas") %>% 
+  mutate(date = discovery_date) %>% 
   group_by(date, county) %>% 
   summarise(n = n())
 
 ## join the count dataset with weather information
-fire_15_count = left_join(fire_15_count, weather_15, by = c("date", "county"))
+fire_rd_count = left_join(fire_rd, weather_15, by = c("date", "county"))
+
+## calculate monthly number of fires and mean temperature
+fire_rd_m = fire_rd_count %>% 
+  separate(date, into = c("year", "month", "day"), sep = "-") %>% 
+  group_by(year, month) %>% 
+  summarise(count = sum(n),
+            tmean = mean(tmean),
+            prcp = mean(prcp))
 
 ## linear regression
-model_2 = lm(n ~ tmean, data = fire_15_count)
+model_2 = lm(count ~ tmean, data = fire_rd_m)
 model_2 %>% 
   tidy() %>% 
   kable(digits = 3, caption = "Association between number of fires and mean temperature")
 ```
-
-
-
-
-
-
-
-
-

@@ -406,7 +406,7 @@ div.tocify {
 <div id="data" class="section level2">
 <h2><strong>Data</strong></h2>
 <ul>
-<li><p>1.88 Million US Wildfires.24 years of geo-referenced wildfire records <a href="https://www.kaggle.com/rtatman/188-million-us-wildfires">here</a></p></li>
+<li><p>1.88 Million US Wildfires. 24 years of geo-referenced wildfire records <a href="https://www.kaggle.com/rtatman/188-million-us-wildfires">here</a></p></li>
 <li><p>NOAA Weather Data</p></li>
 <li><p><code>state</code> and <code>county</code> datasets in package <code>ggplot2</code></p></li>
 <li><p><code>state.x77</code> dataset</p></li>
@@ -417,16 +417,19 @@ div.tocify {
 <ul>
 <li><p>The frequency of wildfire across location and time</p></li>
 <li><p>The top cause of wildfire in the U.S. over ten years</p></li>
-<li><p>Is there a relationship among temprature, precipitation, cause, size and duration of wildfires?</p></li>
+<li><p>Is there a relationship between size and duration of wildfires?</p></li>
+<li><p>Is there a relationship between temperature and the number of fires?</p></li>
 </ul>
 </div>
 <div id="main-results" class="section level2">
 <h2><strong>Main results</strong></h2>
-<p>In general, the number of wildfires in the U.S. from 2005 to 2015 is decreasing. Wildfires are more likely to happen from February to August. Texas had the highest number of wildfires during 2005 - 2015, while surprisingly, New York had the highest number of wildfires per square mile. The latter one should be more interesting because they will allow us to more directly compare wildfire across states. Plus, we find the most common cause to be debris burning. For wildfires with the highest burning sizes, they also have the longest duration.</p>
+<p>In general, the number of wildfires in the U.S. from 2005 to 2015 is decreasing. Wildfires are more likely to happen from February to August. Texas had the highest number of wildfires during 2005 - 2015, while surprisingly, New York had the highest number of wildfires per square mile. The latter one should be more interesting because they will allow us to more directly compare wildfire across states. Plus, we find the most common cause to be debris burning. For wildfires with the highest burning size, they also have the longest duration.</p>
+<p>There is a significant association between size of wildfires and its duration together with causes. Fires that are caused by lightening tend to affect a larger area on average adjusted for duration.</p>
+<p>We also build a simple linear regression model on the monthly number of fires and averaged monthly temperature. For every 1°C increase in monthly mean temperature, the total number of fires per month will increase by 3.820 on average.</p>
 </div>
 <div id="conclusion" class="section level2">
 <h2><strong>Conclusion</strong></h2>
-<p>We recognize that wildfires have various causes and the severity (size, duration, etc.) of wildfires differ by a number of factors; thus, the final result that we present here may not be as accurate and comprehensive as we hoped it to be. Furthermore, as climate change continues to intensify wildfires, it is everyone’s responsibility to understand and learn how to prevent wildfires from happening and protect nature and ourselves. In light of the above, we shall continue our quest to correctly and timely predict future wildfires, using extensive datasets with advanced predictive modelling techniques.</p>
+<p>We recognize that wildfires have various causes and the severity (size, duration, etc.) of wildfires differ by a number of factors; thus, the final result that we present here may not be as accurate and comprehensive as we hoped it to be. Furthermore, as climate change continues to intensify wildfires, it is everyone’s responsibility to understand and learn how to prevent wildfires from happening and protect nature and ourselves. In light of the above, we shall continue our quest to correctly and timely predict future wildfires, using extensive datasets with advanced predictive modeling techniques.</p>
 </div>
 
 

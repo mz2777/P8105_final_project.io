@@ -78,7 +78,7 @@ tidy_fire =
          region = state.name[match(state, state.abb)])  
 ```
 
-**First, we would like to see whether there is any noticeable trends in time or noticeable difference between different states. Also, we would like to more which is the most common cause during 10 years. What’s more, we would like to explore whether the fire size and the fire burning duration had some relationship.**
+**First, we would like to see whether there is any noticeable trends in time or noticeable difference between different states. Also, we would like to more which is the most common cause during 11 years. What’s more, we would like to explore whether the fire size and the fire burnings duration had some relationship.**
 
 # Trends in Time
 
@@ -173,7 +173,7 @@ tidy_fire %>%
 ```
 
 ## Top 10 states experienced most wildfires per year
-The graph below illustrates top 10 states that experienced most wildfires per year during the 10 years. It validated that Texas and California had most fires per year.
+The graph below illustrates top 10 states that experienced most wildfires per year during the 11 years. It validated that Texas and California had most fires per year.
 
 ```{r}
 ## clean a new dataset with ranking of numbers and adjusted numbers
@@ -228,7 +228,7 @@ animate(anim, 200, fps = 15,  width = 680, height = 560)
 
 ## Geography for the per Square Mile 
 
-The figure below shows that the difference of the number of wildfire per square mile between different states during 10 years. We could found that Texas was not the top 1 in this plot but the top 1 is New York. We supposed that the Texas had the highest number of wildfire during 10 years because they had largest area.
+The figure below shows that the difference of the number of wildfire per square mile between different states during 11 years. We could found that Texas was not the top 1 in this plot but the top 1 is New York. We supposed that the Texas had the highest number of wildfire during 11 years because they had largest area.
 
 ```{r}
 state.x77 <- state.x77 %>%
@@ -259,7 +259,7 @@ tidy_fire %>%
 
 ## Wordclouding of causes
 
-The figure below is the wordclouding of the top cause during 10 years. We could see that Debris Burning is the top cause during 10 years. So we would like to suggest that people might need to pay more attention on the debris burning which often caused serious wildfires.
+The figure below is the wordclouding of the top cause during 11 years. We could see that Debris Burning is the top cause during 11 years. So we would like to suggest that people might need to pay more attention on the debris burning which often caused serious wildfires.
 
 ```{r}
 fire = 
@@ -272,7 +272,7 @@ wordcloud(words = fire$stat_cause_descr, freq = fire$n_cause, scale = c(3, .8), 
           max.words=200, random.order=FALSE, rot.per=0.35, 
           colors=brewer.pal(8, "Dark2"))
 
-title( "Fig 6: Wordclouding of the top cause during 10 years")
+title( "Fig 6: Wordclouding of the top cause during 11 years")
 
 ```
 
