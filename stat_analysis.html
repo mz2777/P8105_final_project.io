@@ -357,7 +357,7 @@ div.tocify {
   <a href="EDA.html">Exploratory Analysis</a>
 </li>
 <li>
-  <a href=".html">Statistical Analysis</a>
+  <a href="stat_analysis.html">Statistical Analysis</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -411,7 +411,8 @@ div.tocify {
 </div>
 
 
-<pre class="r"><code>fire = read_csv(&quot;./final_report/data/fire_0515.csv&quot;)
+<pre class="r"><code>## load data
+fire = read_csv(&quot;./final_report/data/fire_0515.csv&quot;)
 
 state.abb = append(state.abb, c(&quot;DC&quot;, &quot;PR&quot;))
 state.name = append(state.name, c(&quot;District of Columbia&quot;, &quot;Puerto Rico&quot;))
@@ -435,94 +436,193 @@ tidy_fire =
   ) %&gt;% 
   select(-duration_day, -duration_hour,-duration_min) %&gt;% 
   mutate(fips_name = tolower(fips_name),
-         state = fct_inorder(state),
          fire_size_class = fct_inorder(fire_size_class),
          region = state.name[match(state, state.abb)],
          cause = as.factor(stat_cause_descr),
-         cause = relevel(cause, ref = &quot;Missing/Undefined&quot;))</code></pre>
-<div id="association-between-cause-and-size-of-fire" class="section level2">
-<h2>Association between cause and size of fire</h2>
-<pre class="r"><code>model_1 = lm(fire_size ~ duration + stat_cause_descr, data = tidy_fire)
-summary(model_1)</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = fire_size ~ duration + stat_cause_descr, data = tidy_fire)
-## 
-## Residuals:
-##    Min     1Q Median     3Q    Max 
-## -64921   -118     -5      6 556934 
-## 
-## Coefficients:
-##                                    Estimate Std. Error t value Pr(&gt;|t|)
-## (Intercept)                         2.93474   15.01682   0.195 0.845056
-## duration                            1.83897    0.02032  90.480  &lt; 2e-16
-## stat_cause_descrCampfire           32.35130   27.76152   1.165 0.243886
-## stat_cause_descrChildren          -13.46524   38.22848  -0.352 0.724665
-## stat_cause_descrDebris Burning      1.32267   19.66725   0.067 0.946381
-## stat_cause_descrEquipment Use      70.94344   27.44424   2.585 0.009738
-## stat_cause_descrFireworks          -7.81690   49.51444  -0.158 0.874558
-## stat_cause_descrLightning         307.90558   19.41122  15.862  &lt; 2e-16
-## stat_cause_descrMiscellaneous      -9.92372   19.38098  -0.512 0.608627
-## stat_cause_descrMissing/Undefined 113.27270   29.84546   3.795 0.000147
-## stat_cause_descrPowerline         132.62189   53.20140   2.493 0.012673
-## stat_cause_descrRailroad          -15.06504   68.26886  -0.221 0.825348
-## stat_cause_descrSmoking           -68.19441   42.89458  -1.590 0.111877
-## stat_cause_descrStructure          21.82560   93.47747   0.233 0.815385
-##                                      
-## (Intercept)                          
-## duration                          ***
-## stat_cause_descrCampfire             
-## stat_cause_descrChildren             
-## stat_cause_descrDebris Burning       
-## stat_cause_descrEquipment Use     ** 
-## stat_cause_descrFireworks            
-## stat_cause_descrLightning         ***
-## stat_cause_descrMiscellaneous        
-## stat_cause_descrMissing/Undefined ***
-## stat_cause_descrPowerline         *  
-## stat_cause_descrRailroad             
-## stat_cause_descrSmoking              
-## stat_cause_descrStructure            
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 3774 on 453560 degrees of freedom
-##   (458544 observations deleted due to missingness)
-## Multiple R-squared:  0.01993,    Adjusted R-squared:  0.0199 
-## F-statistic: 709.5 on 13 and 453560 DF,  p-value: &lt; 2.2e-16</code></pre>
+         cause = relevel(cause, ref = &quot;Missing/Undefined&quot;)) ## change reference level to &quot;missing/undefined&quot; for later linear models</code></pre>
+<div id="association-between-duration-and-size-of-fire" class="section level2">
+<h2>Association between duration and size of fire</h2>
+<p>As stated previously, we noticed a trend of increased size with accumulated fire existing time. We proposed a linear model where duration and causes of fire would be associated with size of fire. There is a significant (p-value &lt; 0.001) association between duration of a fire and its size. For every hour increase in duration, the affect area would increase by 1.839 acres. In addition, certain causes will affect size of fire. There is a strong association between fires caused by lightening and increased size (p-value &lt; 0.001). Compared to fires with missing or undefined causes, fires caused by strikes would affect 194.633 acres more on average under the same duration.</p>
+<pre class="r"><code>## linear model between size, duration and cause
+model_1 = lm(fire_size ~ duration + cause, data = tidy_fire)
+
+model_1 %&gt;% 
+  tidy() %&gt;% 
+  kable(digits = 3,
+        caption = &quot;Association between duration and causes and size of fire&quot;)</code></pre>
+<table>
+<caption>Association between duration and causes and size of fire</caption>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">116.207</td>
+<td align="right">25.798</td>
+<td align="right">4.505</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">duration</td>
+<td align="right">1.839</td>
+<td align="right">0.020</td>
+<td align="right">90.480</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">causeArson</td>
+<td align="right">-113.273</td>
+<td align="right">29.845</td>
+<td align="right">-3.795</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">causeCampfire</td>
+<td align="right">-80.921</td>
+<td align="right">34.796</td>
+<td align="right">-2.326</td>
+<td align="right">0.020</td>
+</tr>
+<tr class="odd">
+<td align="left">causeChildren</td>
+<td align="right">-126.738</td>
+<td align="right">43.606</td>
+<td align="right">-2.906</td>
+<td align="right">0.004</td>
+</tr>
+<tr class="even">
+<td align="left">causeDebris Burning</td>
+<td align="right">-111.950</td>
+<td align="right">28.755</td>
+<td align="right">-3.893</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">causeEquipment Use</td>
+<td align="right">-42.329</td>
+<td align="right">34.543</td>
+<td align="right">-1.225</td>
+<td align="right">0.220</td>
+</tr>
+<tr class="even">
+<td align="left">causeFireworks</td>
+<td align="right">-121.090</td>
+<td align="right">53.775</td>
+<td align="right">-2.252</td>
+<td align="right">0.024</td>
+</tr>
+<tr class="odd">
+<td align="left">causeLightning</td>
+<td align="right">194.633</td>
+<td align="right">28.586</td>
+<td align="right">6.809</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">causeMiscellaneous</td>
+<td align="right">-123.196</td>
+<td align="right">28.562</td>
+<td align="right">-4.313</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">causePowerline</td>
+<td align="right">19.349</td>
+<td align="right">57.188</td>
+<td align="right">0.338</td>
+<td align="right">0.735</td>
+</tr>
+<tr class="even">
+<td align="left">causeRailroad</td>
+<td align="right">-128.338</td>
+<td align="right">71.419</td>
+<td align="right">-1.797</td>
+<td align="right">0.072</td>
+</tr>
+<tr class="odd">
+<td align="left">causeSmoking</td>
+<td align="right">-181.467</td>
+<td align="right">47.751</td>
+<td align="right">-3.800</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">causeStructure</td>
+<td align="right">-91.447</td>
+<td align="right">95.803</td>
+<td align="right">-0.955</td>
+<td align="right">0.340</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="association-between-temperature-and-the-number-of-fires" class="section level2">
 <h2>Association between temperature and the number of fires</h2>
-<pre class="r"><code>fire_15 = tidy_fire %&gt;% 
+<p>We are also interested to know whether there would be more fires when temperature was higher. We retrieved daily weather data using <code>rnoaa</code> package at county level. We have selected 2015 as the target year for analysis since we focused on association between number of fires each day and daily temperature. Additionally, daily temperature distribution was relatively similar across years. We have also limited analysis to counties with most fires in 2015 in states where fires happened most frequently during these 10 years (California and Texas according to previous analysis): Riverside(CA) and Dallas(TX).</p>
+<pre class="r"><code>## subset the dataset to only include data from 2015 in TX and CA
+fire_15 = tidy_fire %&gt;% 
   filter(state == &quot;CA&quot; | state == &quot;TX&quot;) %&gt;% 
   filter(fire_year == 2015) %&gt;% 
-  drop_na(fips_code, fips_name)
-
+  drop_na(fips_code, fips_name) %&gt;% 
+  mutate(county = fips_name)
+  
+## find top 1 county in each state with most fires in 2015
 fire_15 %&gt;% 
-  group_by(region, fips_name) %&gt;% 
-  summarise(n = n()) %&gt;% 
+  group_by(region, county) %&gt;% 
+  summarise(count = n()) %&gt;% 
   ungroup() %&gt;% 
   group_by(region) %&gt;% 
-  mutate(rank = rank(-n)) %&gt;% 
+  mutate(rank = rank(-count)) %&gt;% 
   filter(rank == 1) %&gt;% 
-  select(-rank)</code></pre>
-<pre><code>## # A tibble: 2 x 3
-## # Groups:   region [2]
-##   region     fips_name     n
-##   &lt;chr&gt;      &lt;chr&gt;     &lt;int&gt;
-## 1 California riverside   573
-## 2 Texas      dallas      612</code></pre>
-<pre class="r"><code>stations = ghcnd_stations()
+  select(-rank) %&gt;% 
+  kable(caption = &quot;Counties with most count of fires in 2015&quot;)</code></pre>
+<table>
+<caption>Counties with most count of fires in 2015</caption>
+<thead>
+<tr class="header">
+<th align="left">region</th>
+<th align="left">county</th>
+<th align="right">count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">California</td>
+<td align="left">riverside</td>
+<td align="right">573</td>
+</tr>
+<tr class="even">
+<td align="left">Texas</td>
+<td align="left">dallas</td>
+<td align="right">612</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>## subset further to focus on the above two counties
+fire_15 = fire_15 %&gt;% 
+  filter(county == &quot;riverside&quot; | county == &quot;dallas&quot;) %&gt;% 
+  mutate(date = discovery_date)
 
-stations_15 = stations %&gt;% 
+## get a list of stations in rnoaa
+stations = ghcnd_stations()
+
+## get station id in &quot;riverside&quot; and &quot;dallas&quot;
+station_id = stations %&gt;% 
   mutate(name = tolower(name)) %&gt;% 
   filter(state == &quot;CA&quot; | state == &quot;TX&quot;) %&gt;% 
   filter(str_detect(name, c(&quot;riverside&quot;, &quot;dallas&quot;)),
          last_year == 2019, 
-         element == &quot;TMAX&quot;)
+         element == &quot;TMAX&quot;) %&gt;% 
+  pull(id)
 
-station_id = pull(stations_15, id)
-
+## retrieve weather data in each station in 2015
 weather_15 = meteo_pull_monitors(station_id,
                                   date_min = &quot;2015-01-01&quot;, 
                                   date_max = &quot;2015-12-31&quot;,
@@ -530,29 +630,76 @@ weather_15 = meteo_pull_monitors(station_id,
   mutate(tmax = tmax / 10,
          tmin = tmin / 10,
          tmean = (tmax + tmin) / 2,
-         fips_name = recode(id, 
+         county = recode(id, 
                             &quot;USW00003171&quot; = &quot;riverside&quot;,
                             &quot;USW00013960&quot; = &quot;dallas&quot;))
 
-fire_15 = fire_15 %&gt;% 
-  filter(fips_name == &quot;riverside&quot; | fips_name == &quot;dallas&quot;) %&gt;% 
-  mutate(date = discovery_date)
+## join the weather data with cleaned dataset
+fire_15_weather = left_join(fire_15, weather_15, by = c(&quot;date&quot;, &quot;county&quot;))</code></pre>
+<div id="distribution-of-mean-temperature-and-fires" class="section level3">
+<h3>Distribution of mean temperature and fires</h3>
+<p>The below graph illustrates distribution of daily mean temperature and number of fires per day in 2015. The points represents daily mean temperature which roughly follows a bell-shape curve. The histogram below shows number of fires per day. Both variables showed a similar pattern of distribution. In addition, precipitation is unlikely to be associated with number of fires with such insufficient data.</p>
+<pre class="r"><code>p1 = fire_15_weather %&gt;% 
+  ggplot(aes(x = date)) +
+  geom_histogram(aes(fill = county), alpha = .8, show.legend = FALSE) +
+  geom_point(aes(y = tmean * 5, size = prcp, color = county), alpha = .6) +
+  geom_smooth(aes(y = tmean * 5, color = county), 
+              method = &quot;loess&quot;, se = FALSE, alpha = .7, size = .8) +
+  scale_y_continuous(sec.axis = sec_axis(~./5, name = &quot;Mean temperature (°C)&quot;)) +
+  labs(title = &quot;Fig 1. Distribution of mean temperature and number of fires in 2015&quot;,
+       x = &quot;Date&quot;,
+       y = &quot;Number of fires&quot;,
+       color = &quot;County&quot;,
+       size = &quot;Precipitation&quot;)
+  
+p1</code></pre>
+<p><img src="stat_analysis_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="linear-regression" class="section level3">
+<h3>Linear Regression</h3>
+<p>We build a linear regression model with number of fires and mean daily temperature. There is significant association (p-value &lt; 0.001) between the two. For every 1°C increase in daily mean temperature, the average number of fires per day will increase by 0.074.</p>
+<pre class="r"><code>## form a new dataset with daily number of fires
+fire_15_count = fire_15 %&gt;% 
+  group_by(date, county) %&gt;% 
+  summarise(n = n())
 
-fire_15_weather = left_join(fire_15, weather_15, by = c(&quot;date&quot;, &quot;fips_name&quot;))
+## join the count dataset with weather information
+fire_15_count = left_join(fire_15_count, weather_15, by = c(&quot;date&quot;, &quot;county&quot;))
 
-fire_15_weather %&gt;% 
-  ggplot(aes(x = date, group = fips_name, color = fips_name)) +
-  geom_point(aes(y = tmean, size = prcp), alpha = .8)</code></pre>
-<p><img src="stat_analysis_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-<pre class="r"><code>fire_15_weather %&gt;% 
-  group_by(date, fips_name) %&gt;% 
-  ggplot(aes(x = date, fill = fips_name)) + 
-  geom_histogram(alpha = 0.8) +
-  scale_color_viridis()</code></pre>
-<p><img src="stat_analysis_files/figure-html/unnamed-chunk-2-2.png" width="672" /></p>
-<pre class="r"><code>fire_15_count = fire_15_weather %&gt;% 
-  group_by(date, tmean, prcp, stat_cause_descr) %&gt;% 
-  summarise(n = n())</code></pre>
+## linear regression
+model_2 = lm(n ~ tmean, data = fire_15_count)
+model_2 %&gt;% 
+  tidy() %&gt;% 
+  kable(digits = 3, caption = &quot;Association between number of fires and mean temperature&quot;)</code></pre>
+<table>
+<caption>Association between number of fires and mean temperature</caption>
+<thead>
+<tr class="header">
+<th align="left">term</th>
+<th align="right">estimate</th>
+<th align="right">std.error</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">1.041</td>
+<td align="right">0.305</td>
+<td align="right">3.409</td>
+<td align="right">0.001</td>
+</tr>
+<tr class="even">
+<td align="left">tmean</td>
+<td align="right">0.074</td>
+<td align="right">0.013</td>
+<td align="right">5.625</td>
+<td align="right">0.000</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 
 
