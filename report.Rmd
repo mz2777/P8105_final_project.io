@@ -109,32 +109,12 @@ At first, we were interested in exploring the correlation between wildfire's occ
 
 * **Read raw data**
 
-```{r eval = FALSE}
-## read sqlite raw file, 758.9Mb
-raw = dbConnect(SQLite(), "./data/FPA_FOD_20170508.sqlite")
-fires = tbl(raw, "Fires") %>% collect()
-dbDisconnect(raw)
 
-fires = fires %>% 
-  janitor::clean_names() %>% 
-  select(fire_year, discovery_date, discovery_time, stat_cause_descr,
-         cont_date, cont_time, fire_size, fire_size_class,
-         latitude, longitude, state, county, fips_code, fips_name)
-
-## constricted the data between 2005 and 2015 for interest
-
-fire_0515 = fires %>% 
-  filter(fire_year %in% c(2005:2015))
-
-## save the dataframe into a csv file
-
-write_csv(fire_0515, path = "./data/fire_0515.csv")
-```
 
 * **Clean data**
 
 ```{r roughly data cleaning, message = FALSE}
-fire = read_csv("./final_report//data/fire_0515.csv")
+fire = read_csv("./final_report/data/fire_0515.csv")
 
 #select useful columns
 tidy_fire = 
