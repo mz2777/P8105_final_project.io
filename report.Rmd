@@ -270,7 +270,7 @@ tidy_fire %>%
     theme(plot.title = element_text(hjust = 0.5), legend.position = "bottom")
 ```
 
-    **Top 10 states experienced most wildfires per year**
+* **Top 10 states experienced most wildfires per year**
 The graph below illustrates top 10 states that experienced most wildfires per year during the 10 years. It validated that Texas and California had most fires per year.
 
 ```{r}
