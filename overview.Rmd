@@ -22,13 +22,11 @@ Wildfire hazards are considered as national threats. On average, more than 700 w
 
 ## **Initial Questions**
 
-* The frequency of wildfire across the states and time.
+* The frequency of wildfire across location and time
 
-* Which cause of fire is the most frequent in the U.S.?
+* The top cause of wildfire in the U.S. over ten years
 
-* Is there a relationship among temprature, precipitation, cause of fires, size of fires and duration?
-
-* tbc
+* Is there a relationship among temprature, precipitation, cause, size and duration of wildfires?
 
 ## **Main results**
 
