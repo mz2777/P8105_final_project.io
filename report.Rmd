@@ -1,6 +1,6 @@
 ---
 title: "**Report**"
-author: "Sitong Cui, Jiarui Fu, Mengyu Zhang, Ziqi Zhou"
+author: "Sitong Cui, Jiarui Fu, Mengyuan Li, Mengyu Zhang, Ziqi Zhou"
 date: "12/3/2019"
 output:
   html_document: 
