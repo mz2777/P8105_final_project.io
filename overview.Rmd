@@ -18,6 +18,10 @@ Based on the purpose of effectively preventing wildfires, our group work on the 
 
 * NOAA Weather Data
 
+* `state` and `county` datasets in package `ggplot2`
+
+* `state.x77` dataset
+
 ## **Initial Questions**
 
 * The frequency of wildfire across the states and time.
