@@ -78,7 +78,7 @@ tidy_fire =
          region = state.name[match(state, state.abb)])  
 ```
 
-**First, we would like to see whether there is any noticable trends in time and the difference between different states. Second, we assumed that fire size and the fire burning duration might have some relationship. What's more, we would like to more which is the most common cause during 10 years.**
+**First, we would like to see whether there is any noticeable trends in time or noticeable difference between different states. Also, we would like to more which is the most common cause during 10 years. What’s more, we would like to explore whether the fire size and the fire burning duration had some relationship.**
 
 # Trends in Time
 
@@ -283,9 +283,12 @@ The figure below shows that ranking of cause. We counted how many cases dued to 
 ```{r}
 rank_cause = tidy_fire %>% 
   group_by(stat_cause_descr) %>% 
-  summarize(n_fire = n()) %>% 
-  ggplot(aes(x = fct_reorder(stat_cause_descr, n_fire), y = n_fire)) +
-  geom_bar(stat = "identity", aes(fill = stat_cause_descr), alpha=.6, width=.4) +
+  summarize(count = n()) %>% 
+  mutate(stat_cause_descr =fct_reorder(stat_cause_descr, count)) %>% 
+  mutate(cause = stat_cause_descr) %>% 
+  select(-stat_cause_descr) %>% 
+  ggplot(aes(x = cause, y = count)) +
+  geom_bar(stat = "identity", aes(fill = cause), alpha=.6, width=.4) +
   coord_flip() +
   labs(x = "", y = "Number of Fires", title = "Fig 7: Wildfire Counts in the U.S. by Causes from 2005 to 2015") +
   viridis::scale_color_viridis() + theme_bw() + theme(legend.position = "none")
@@ -310,7 +313,7 @@ size_duration =
   geom_density(alpha = 0.4) +
   labs(x = "Duration (hours)", fill = "Fire Size Class",
        title = "Fig 8: Distribution of duration for different fire size class") +
-  theme_bw()
+  theme_bw() 
 
 ggplotly(size_duration)
 ```
