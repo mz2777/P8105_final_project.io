@@ -34,6 +34,7 @@ library(viridis)
 
 library(wordcloud)
 library(RColorBrewer)
+library(tm)
 
 theme_set(theme_minimal() + theme(legend.position = "bottom"))
 ```
@@ -199,8 +200,12 @@ tidy_fire %>%
     theme(plot.title = element_text(hjust = 0.5), legend.position = "bottom") 
 
 ```
+
+
 ## Causes of Wildfires
+
 The figure below is the wordclouding of the top cause during 10 years. We could see that Debris Burning is the top cause during 10 years. So we would like to suggest that people might need to pay more attention on the debris burning which often caused serious wildfires.
+
 
 ```{r}
 fire = 
@@ -208,13 +213,23 @@ fire =
   group_by(stat_cause_descr) %>% 
   summarise(n_cause = n())
 set.seed(555)
-p = wordcloud(words = fire$stat_cause_descr, freq = fire$n_cause, scale = c(3, .8), min.freq = 1,
+
+
+
+wordcloud(words = fire$stat_cause_descr, freq = fire$n_cause, scale = c(3, .8), min.freq = 1,
           max.words=200, random.order=FALSE, rot.per=0.35, 
           colors=brewer.pal(8, "Dark2"))
+
+title( "Fig 5: Wordclouding of the top cause during 10 years")
+
+
 ```
 
 ## Cause ranking
+
 The figure below shows that ranking of cause. We counted how many cases dued to specific cause and ranked them. It is clear that Debris Burning is the most common cause.
+
+
 ```{r}
 rank_cause = tidy_fire %>% 
   group_by(stat_cause_descr) %>% 
@@ -241,7 +256,7 @@ size_duration =
   ggplot(aes(x = duration/60, fill = fire_size_class)) +
   geom_density(alpha = 0.4) +
   labs(x = "Duration (hours)", fill = "Fire Size Class",
-       title = "Distribution of duration for different fire size class") +
+       title = "Fig7: Distribution of duration for different fire size class") +
   theme_bw()
 
 ggplotly(size_duration)
