@@ -13,17 +13,20 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## **Motivation**
-Wildfire hazards are  
+Wildfire hazards are     
 #### Wildfires in the U.S.   
 Here are some facts about wildfires in the U.S.     
+
 * Cause   
 According to the U.S. Department of Interior, about 90 percent of wildfires in the United States are started by human, resulting from unattended campfires, debris burnings, downed equipments, negligently discarded cigarettes and intentional acts of arson, etc. Verisk's 2017 Wildfire Risk Analysis showed that at present, 4.5 million U.S. homes were identified as having high or extreme high risk of wildfire; more than 2 million homes come from California. The nature (lightning or lava) and climate change, is found to be responsible for the remaining 10 percent.   
+
 * Loss     
 In October 2019, significant fires broke out in California and led to the evacuation of over 200,000 people, which were declared as a state of emergency. The Kincade Fire in Sonoma County has burned over 76,000 acres. The Getty Fire in Los Angeles caused over 7000 residences to be placed in a mandatory evacuation zone.    
 
 In 2018, there were 58,083 wildfires where 8.8 million acres were burned.   
 
 In 2017, there were 71,499 wildfires where over 10 million acres were burned.   
+
 * Policy   
 The governmental strategy on wildfires has undergone a major shift from the primary focus on suppression of wildfires to multiple, comprehensive measures with sustainable potential. The current policies aim to help manage wildfire risk by reduction of hazardous fuels, restoration of the ecosystem and assistance from the communities, etc. For instance, the federal government have formulatted and implemented policies on protecting funds dedicated to forest management and resotration, as well as expediting small-scale forest management research projects.   
 
@@ -40,8 +43,8 @@ Therefore, considering these massive, devastating wildfires and their catastropi
 * The association among a number of factors and the duration of wildfires in Riverside county, California   
 
 ## **Initial Questions**
-At first, we are interested in exploring the correlation between wildfire occurence and a number of factors, such as, can we predict when the wildfire will .
-However, because the information in our dataset is relatively limited with many missing values, we fail to provide a predictive model with high accuracy and 
+At first, we were interested in exploring the correlation between wildfire's occurence/ severity and a number of factors, such as location, time, weather and so on. Particularly, we would like to find out if there is a predictive model that can be used to fit our data. However, because the information within our dataset is still limited (with many missing values), we failed to provide such a predictive model with high accuracy and precision regarding the wildfire's occurence and severity at a national level. As a result, we chose one county - Riverside, California, which had the highest number of the most destructive wildfires in year 2015, and attempted to build a regression model to examine the association between the duration of wildfires along with other factors like weather, ...
+
 ## **Data**
 
 * **`state` and `county` datasets in package `ggplot2`**
