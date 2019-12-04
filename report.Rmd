@@ -1,6 +1,6 @@
 ---
 title: "**Report**"
-author: "Sitong Cui, Jiarui Fu, Mengyu Zhang, Ziqi Zhou"
+author: "Sitong Cui, Jiarui Fu, Mengyuan Li, Mengyu Zhang, Ziqi Zhou"
 date: "12/3/2019"
 output:
   html_document: 
@@ -13,41 +13,39 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## **Motivation**
-Wildfire hazards are considered as national threats, which can cause 
-We are also motivated by the disastrous aftermath of the deadly wildfires in California this season: their long-lasting threats to human health and the ecosystem. We
-Currently, how to correctly predict and manage wildfires still remains elusive. 
+Wildfire hazards are considered as national threats, which can devour everything in its path, trees, homes and even lives, and spread for miles within a few minutes. The disastrous aftermaths of the deadly wildfires, including their long-lasting threats to human health and the ecosystem, are very worrying and thus require continual attention from the public. According to the U.S. Fire Service, more than 700 wildfires occur every year, burning down approximately 7 million acres of land and destroying more than 26,000 structures. The U.S. government spends over 5 billion dollars each year to fight these uncontrollable monster fires, yet the correct prediction and management of wildfires still remain elusive.    
 
 #### Wildfires in the U.S.   
 Here are some facts about wildfires in the U.S.     
 
 * Cause   
-According to the U.S. Department of Interior, about 90 percent of wildfires in the United States are started by human, resulting from unattended campfires, debris burnings, downed electrical equipments and power lines, negligently discarded cigarettes and intentional acts of arson, etc. Verisk's 2017 Wildfire Risk Analysis showed that at present, 4.5 million U.S. homes were identified as having high or extreme high risk of wildfire; more than 2 million homes are in California. The nature (lightning or lava) and climate change, are found to be responsible for the remaining 10 percent.   
+According to the U.S. Department of Interior, about 90 percent of wildfires in the United States are started by human, resulting from unattended campfires, debris burnings, downed electrical equipments and power lines, negligently discarded cigarettes and intentional acts of arson, etc. Verisk's 2017 Wildfire Risk Analysis shows that at present, 4.5 million U.S. homes are identified as having high or extreme high risk of wildfire, where more than 2 million homes are in California. The nature (lightning or lava) and climate change, are found to be responsible for the remaining 10 percent.   
 
 * Loss     
-In October 2019, significant fires broke out in California and led to the evacuation of over 200,000 people, which were declared as a state of emergency. The Kincade Fire in Sonoma County has burned over 76,000 acres. The Getty Fire in Los Angeles caused over 7000 residences to be placed in a mandatory evacuation zone.    
+In October 2019, significant fires broke out in California and led to the evacuation of over 200,000 people, which were declared as a state of emergency. The Kincade Fire in Sonoma County burned over 76,000 acres. The Getty Fire in Los Angeles caused over 7000 residences to be placed in a mandatory evacuation zone.    
 
   In 2018, there were 58,083 wildfires where 8.8 million acres were burned.   
 
   In 2017, there were 71,499 wildfires where over 10 million acres were burned.   
 
 * Policy   
-The governmental strategy on wildfires has undergone a major shift from the primary focus on suppression of wildfires to multiple, comprehensive measures with sustainable potential. Current policies aim to help manage wildfire risk by reduction of hazardous fuels, restoration of the ecosystem and assistance from the communities, etc. For instance, the federal government have formulatted and implemented policies on protecting funds dedicated to forest management and resotration, as well as expediting small-scale forest management research projects.   
+The governmental strategy on wildfires has undergone a major shift from the primary focus on suppression of wildfires to multiple, comprehensive measures with sustainable potential. Current policies aim to help manage wildfire risk by reduction of hazardous fuels, restoration of the ecosystem and assistance from the communities, etc. For instance, the federal government have formulated and implemented policies on protecting funds dedicated to forest management and resotration, as well as expediting small-scale forest management research projects.   
 
 #### Goals of our Project
-Therefore, considering these massive, devastating wildfires and their catastropic effects on human communities and the environment, we decide to investigate the following research questions to discover if there is any clear trend and to learn how to better prevent and control wildfires. We also build a linear regression model to assess the relationship between fire duration and some potential risk factors. In this project, we are going to examine:    
+Considering these massive, devastating wildfires and their catastropic effects on human communities and the environment, we decide to investigate the following research questions to discover if there is any clear trend and to learn how to better prevent and control wildfires. We also build a linear regression model to assess the relationship between fire duration and some potential risk factors. In this project, we are going to examine:    
 
-* The frequency of fires acrossing states over time from 2005 to 2015 and the top ten states with the largest number of wildfires in the ten-year period      
+* The frequency of wildfires across states over time from 2005 to 2015 and the top ten states with the largest number of wildfires in the ten-year period      
 
-* The geographical distribution of wildfires across states with the number of wildfires per squre mile   
+* The geographical distribution of wildfires across states with the number of wildfires per squre mile    
 
 * The most common causes of wildfires       
 
 * The relationship between duration and fire size   
 
-* The association among a number of factors and the duration of wildfires in Riverside county, California   
+* The association among a number of factors and the duration of wildfires in Riverside, California and Dallas, Texas  
 
 ## **Initial Questions**
-At first, we were interested in exploring the correlation between wildfire's occurence/ severity and a number of factors, such as location, time, weather and so on. Particularly, we wanted to find out if there is a predictive model that can be used to fit our data. However, because the information of our dataset is quite limited (with many missing values), we failed to provide such a model with high accuracy and precision regarding the wildfire's occurence/severity at a national level. As a result, we ended up with two counties - Riverside, California and Dallas, Texas, which had the highest number of the most destructive wildfires in year 2015, and attempted to build a regression model to examine the association between the duration of wildfires along with other factors like weather, size and cause. Despite the fact that we narrowed down the scope of our research in terms of predicting wildfires, we have finished all the exploratory data analysis as we proposed at the beginning of this project.  
+At first, we were interested in exploring the correlation between wildfire's occurence/ severity and a number of factors, such as location, time, weather and so on. Particularly, we wanted to find out if there is a predictive model that can be used to fit our data. However, because the information of our dataset is quite limited (with many missing values and some wrong values), we failed to provide such a model with high accuracy and precision regarding the wildfire's occurence/severity at a national level. As a result, we ended up with two counties - Riverside, California and Dallas, Texas, which had the highest number of the most destructive wildfires in year 2015, and attempted to build a regression model to examine the association between the duration of wildfires along with other factors like weather, size and cause. Despite the fact that we narrowed down the scope of our research in terms of predicting wildfires, we have finished all the exploratory data analysis as we proposed at the beginning of this project.  
 
 ## **Data**
 
@@ -80,8 +78,13 @@ At first, we were interested in exploring the correlation between wildfire's occ
 ## **Statistical Analysis**
 
 ## **Discussion**
-We recognize that wildfires have various causes and the severity (size, duration...) of wildfires differ by a number of factors; thus, the co
+We recognize that wildfires have various causes and the severity (size, duration...) of wildfires differ by a number of factors; thus, the final model that we present may not be 
 
 
-As climate change continues to intensify wildfires, it is everyone's responbility to unsderstand and learn how to prevent wildfires from happening and protect nature and ourselves. Futhermore, we shall continue our quest to correctly and timely predict future wildfires, using extensive dataset with advanced predictive modelling techniques. 
+As climate change continues to intensify wildfires, it is everyone's responbility to understand and learn how to prevent wildfires from happening and protect nature and ourselves. Futhermore, we shall continue our quest to correctly and timely predict future wildfires, using extensive dataset with advanced predictive modelling techniques. 
+
+
+In general, the number of wildfires in the U.S. from 2005 to 2015 is decreasing. Wildfires are more likely to happen from February to August. Texas had the highest number of wildfires during 2005 - 2015, while surpisingly, New York had the highest number of wildfires per square mile. The latter one should be more interesting because they will allow us to more directly compare wildfire across states. Plus, we found that the most common reason is debris burning. For wildfires with highest buring size, they also have longest duration. 
+
+
 
