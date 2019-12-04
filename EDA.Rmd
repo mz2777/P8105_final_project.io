@@ -64,12 +64,12 @@ tidy_fire =
   # change julian days
   mutate(discovery_date = as.Date(discovery_date - 2458014.5, origin = '2017-09-18'),
          cont_date = as.Date(cont_date - 2458014.5, origin = '2017-09-18'),
-         duration_day = as.numeric(difftime(cont_date, discovery_date))
+         duration_day = as.numeric(difftime(cont_date, discovery_date, units = "days"))
           ) %>% 
   mutate(
     duration_hour = cont_hour - disc_hour,
     duration_min = cont_min - disc_min,
-    duration = duration_day / 60 + duration_hour * 60 + duration_min
+    duration = duration_day * 24 + duration_hour + duration_min / 60
   ) %>% 
   select(-duration_day, -duration_hour,-duration_min) %>% 
   mutate(fips_name = tolower(fips_name),
@@ -172,6 +172,7 @@ tidy_fire %>%
     theme(plot.title = element_text(hjust = 0.5), legend.position = "bottom")
 ```
 
+## Top 10 states experienced most wildfires per year
 The graph below illustrates top 10 states that experienced most wildfires per year during the 10 years. It validated that Texas and California had most fires per year.
 
 ```{r}
@@ -254,7 +255,9 @@ tidy_fire %>%
 
 ```
 
-## Causes of Wildfires
+# Causes of Wildfires
+
+## Wordclouding of causes
 
 The figure below is the wordclouding of the top cause during 10 years. We could see that Debris Burning is the top cause during 10 years. So we would like to suggest that people might need to pay more attention on the debris burning which often caused serious wildfires.
 
@@ -290,9 +293,9 @@ rank_cause = tidy_fire %>%
 ggplotly(rank_cause)
 ```
 
-## Association between Duration and Fire Size
+# Association between Duration and Fire Size
 
-The figure below shows that the distribution of duration for different fire size class. We could see that the curve always concentrated in duration = 0. This is because information bias. There were lots of data whose duration is equal to zero and we had no idea about what the fact was. 
+The figure below shows that the distribution of duration（less than 48 hours) for different fire size class. We strict the duration to see the trend clear, We could see that the curve always concentrated in duration = 0. This is because information bias. There were lots of data whose duration is equal to zero and we had no idea about what the fact was. 
 
 Regardless the duration = 0, since the fire class A is the smallest size, we could see that it had short duration compared to the higher fire class like F or G. So we assumed that there was some relationship between fire burning duration and the fire size. So we did some model about it in our analysis.
 
@@ -301,9 +304,9 @@ size_duration =
   tidy_fire %>% 
   mutate(fire_size_class = fct_relevel(fire_size_class, c("A", "B", "C", "D", "E", "F", "G"))) %>% 
   drop_na(duration) %>% 
-  filter(duration < 2880) %>%
+  filter(duration < 48) %>%
   filter(duration != 0) %>%  
-  ggplot(aes(x = duration/60, fill = fire_size_class)) +
+  ggplot(aes(x = duration, fill = fire_size_class)) +
   geom_density(alpha = 0.4) +
   labs(x = "Duration (hours)", fill = "Fire Size Class",
        title = "Fig 8: Distribution of duration for different fire size class") +

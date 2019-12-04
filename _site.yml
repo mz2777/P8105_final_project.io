@@ -9,7 +9,7 @@ navbar:
     - text: "Exploratory Analysis"
       href: EDA.html
     - text: "Statistical Analysis"
-      href: .html
+      href: stat_analysis.html
     - text: Shiny Apps
       menu:
       - text: "Number of Wildfires in US"
