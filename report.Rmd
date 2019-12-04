@@ -78,6 +78,9 @@ At first, we were interested in exploring the correlation between wildfire's occ
 
 ## **Data**
 
+### **Data resources**
+
+
 * **`state` and `county` datasets in package `ggplot2`**
 
   The `state` and `county` dataset are used to plot the map in exploratory analysis and shiny apps.
@@ -102,7 +105,7 @@ At first, we were interested in exploring the correlation between wildfire's occ
 
   + `STAT_CAUSE_DESCR` = Description of the cause of the fire.
 
-### Read and clean data
+### **Read and clean data**
 
 * **Read raw data**
 
@@ -132,9 +135,7 @@ write_csv(fire_0515, path = "./data/fire_0515.csv")
 
 ```{r roughly data cleaning, message = FALSE}
 fire = read_csv("./final_report//data/fire_0515.csv")
-```
 
-```{r}
 #select useful columns
 tidy_fire = 
   fire %>% 
@@ -144,10 +145,7 @@ tidy_fire =
          cont_min = as.numeric(cont_min),
          disc_hour = as.numeric(disc_hour),
          disc_min = as.numeric(disc_min))
-```
 
-
-```{r}
 #calculate duration
 state.abb = append(state.abb, c("DC", "PR"))
 state.name = append(state.name, c("District of Columbia", "Puerto Rico"))
@@ -175,11 +173,11 @@ tidy_fire =
 
 ## **Exploratory Analysis**
 
-**First, we would like to see whether there is any noticeable trends in time or noticeable difference between different states. Also, we would like to more which is the most common cause during 10 years. What’s more, we would like to explore whether the fire size and the fire burning duration had some relationship.**
+First, we would like to see whether there is any noticeable trends in time or noticeable difference between different states. Also, we would like to more which is the most common cause during 10 years. What’s more, we would like to explore whether the fire size and the fire burning duration had some relationship.
 
-* **Trends in Time**
+### **Trends in Time**
 
-  * **The Number of Wildfires Over Ten Years**
+* **The Number of Wildfires Over Ten Years**
 
 The figure below shows that the number of wildfires change over ten years. The range of the number of wildfires per year is between 64,000 and 115,000 from 2005 to 2015. 
 
@@ -209,7 +207,7 @@ ggplotly(fig_1)
 
 
 
-  *  **Heatmap for Trend over Time.**
+*  **Heatmap for Trend over Time.**
 
 The figure below is the heatmap for trend over time.We could see in the plot that the wildfire happened a lot around March in 2006 and Febrary in 2008 etc.
 
@@ -246,9 +244,9 @@ ggplotly(heatmap_plot + theme(legend.position = "none"))
 ```
 
 
-* **Trends in States**
+### **Trends in States**
 
-  * **Geography for the Number of Wildfire in U.S. during 2005 - 2015**
+* **Geography for the Number of Wildfire in U.S. during 2005 - 2015**
 
 The figure below shows the difference of the number of wildfires betwwen different states. It is obviously that the Texas and California had the highest number of wildfires during 2005 - 2015.
 
@@ -271,7 +269,7 @@ tidy_fire %>%
     theme(plot.title = element_text(hjust = 0.5), legend.position = "bottom")
 ```
 
-  * **Top 10 states experienced most wildfires per year**
+    **Top 10 states experienced most wildfires per year**
 The graph below illustrates top 10 states that experienced most wildfires per year during the 10 years. It validated that Texas and California had most fires per year.
 
 ```{r}
@@ -325,7 +323,7 @@ anim = staticplot +
 animate(anim, 200, fps = 15,  width = 680, height = 560)
 ```
 
-  * **Geography for the per Square Mile**
+* **Geography for the per Square Mile**
 
 The figure below shows that the difference of the number of wildfire per square mile between different states during 10 years. We could found that Texas was not the top 1 in this plot but the top 1 is New York. We supposed that the Texas had the highest number of wildfire during 10 years because they had largest area.
 
@@ -354,9 +352,9 @@ tidy_fire %>%
 
 ```
 
-* **Causes of Wildfires**
+### **Causes of Wildfires**
 
-  * **Wordclouding of causes**
+* **Wordclouding of causes**
 
 The figure below is the wordclouding of the top cause during 10 years. We could see that Debris Burning is the top cause during 10 years. So we would like to suggest that people might need to pay more attention on the debris burning which often caused serious wildfires.
 
@@ -374,7 +372,8 @@ wordcloud(words = fire$stat_cause_descr, freq = fire$n_cause, scale = c(3, .8), 
 title( "Fig 6: Wordclouding of the top cause during 10 years")
 
 ```
-  * **Cause ranking**
+  
+* **Cause ranking**
 
 The figure below shows that ranking of cause. We counted how many cases dued to specific cause and ranked them. It is clear that Debris Burning is the most common cause.
 
@@ -394,7 +393,7 @@ rank_cause = tidy_fire %>%
 ggplotly(rank_cause)
 ```
 
-* **Association between Duration and Fire Size**
+### **Association between Duration and Fire Size**
 
 The figure below shows that the distribution of duration（less than 48 hours) for different fire size class. We strict the duration to see the trend clear, We could see that the curve always concentrated in duration = 0. This is because information bias. There were lots of data whose duration is equal to zero and we had no idea about what the fact was. 
 
