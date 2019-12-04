@@ -351,7 +351,7 @@ div.tocify {
   <a href="overview.html">Overview</a>
 </li>
 <li>
-  <a href="eda.html">Explortary Analysis</a>
+  <a href="EDA.html">Explortary Analysis</a>
 </li>
 <li>
   <a href=".html">Statistical Analysis</a>
@@ -422,11 +422,30 @@ div.tocify {
 </ul>
 </div>
 </div>
+<div id="related-work" class="section level2">
+<h2><strong>Related work</strong></h2>
+</div>
 <div id="initial-questions" class="section level2">
 <h2><strong>Initial Questions</strong></h2>
 </div>
 <div id="data" class="section level2">
 <h2><strong>Data</strong></h2>
+<ul>
+<li><p><strong><code>state</code> and <code>county</code> datasets in package <code>ggplot2</code></strong></p>
+<p>The <code>state</code> and <code>county</code> dataset are used to plot the map in exploratory analysis and shiny apps.</p></li>
+<li><p><strong><code>state.x77</code> dataset</strong></p>
+<p>We use <code>Area</code> variable to calculate the number of wildfires per square mile</p></li>
+<li><p><strong>NOAA Weather Data</strong></p>
+<p>We use this data to find the association among duration, number of fires and tempreture in riverside, California.</p></li>
+<li><p><strong>1.88 Million US Wildfire. 24 years of geo-referenced wildfire records</strong></p>
+<p>This data publication contains a spatial database of wildfires that occurred in the United States from 1992 to 2015. This dataset includes 1.88 million geo-referenced wildfire records, representing a total of 140 million acres burned during the 24-year period. We mainly focus on the time period from 2005 to 2015 and the following core data elements: discovery and control date, final fire size, causes of wildfires and a point location.</p>
+<p>The variables we used for analysis are:</p>
+<ul>
+<li><p><code>duration</code> = Burning time in hours calculated by <code>discovery_date</code>, <code>discovery_time</code>, <code>cont_data</code> and <code>cont_time</code>.</p></li>
+<li><p><code>FIRE_SIZE_CLASS</code> = Code for fire size based on the number of acres within the final fire perimeter expenditures (A=greater than 0 but less than or equal to 0.25 acres, B=0.26-9.9 acres, C=10.0-99.9 acres, D=100-299 acres, E=300 to 999 acres, F=1000 to 4999 acres, and G=5000+ acres).</p></li>
+<li><p><code>STAT_CAUSE_DESCR</code> = Description of the cause of the fire.</p></li>
+</ul></li>
+</ul>
 </div>
 <div id="exploratory-analysis" class="section level2">
 <h2><strong>Exploratory Analysis</strong></h2>

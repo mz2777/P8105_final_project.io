@@ -32,9 +32,35 @@ knitr::opts_chunk$set(echo = TRUE)
 
 * The association among factors and duration of wildfires in CA
 
+## **Related work** 
+
 ## **Initial Questions**
 
 ## **Data**
+
+* **`state` and `county` datasets in package `ggplot2`**
+
+  The `state` and `county` dataset are used to plot the map in exploratory analysis and shiny apps.
+
+* **`state.x77` dataset**
+
+  We use `Area` variable to calculate the number of wildfires per square mile
+  
+* **NOAA Weather Data**
+
+  We use this data to find the association among duration, number of fires and tempreture in riverside, California.
+
+* **1.88 Million US Wildfire. 24 years of geo-referenced wildfire records**
+
+  This data publication contains a spatial database of wildfires that occurred in the United States from 1992 to 2015. This dataset includes 1.88 million geo-referenced wildfire records, representing a total of 140 million acres burned during the 24-year period. We mainly focus on the time period from 2005 to 2015 and the following core data elements: discovery and control date, final fire size, causes of wildfires and a point location.
+
+  The variables we used for analysis are: 
+
+  + `duration` = Burning time in hours calculated by `discovery_date`, `discovery_time`, `cont_data` and `cont_time`.
+
+  + `FIRE_SIZE_CLASS` = Code for fire size based on the number of acres within the final fire perimeter expenditures (A=greater than 0 but less than or equal to 0.25 acres, B=0.26-9.9 acres, C=10.0-99.9 acres, D=100-299 acres, E=300 to 999 acres, F=1000 to 4999 acres, and G=5000+ acres).
+
+  + `STAT_CAUSE_DESCR` = Description of the cause of the fire.
 
 ## **Exploratory Analysis**
 
