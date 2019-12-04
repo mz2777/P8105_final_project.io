@@ -62,7 +62,7 @@ The governmental strategy on wildfires has undergone a major shift from the prim
 #### Goals of our Project
 Considering these massive, devastating wildfires and their catastropic effects on human communities and the environment, we decide to investigate the following research questions to discover if there is any clear trend and to learn how to better prevent and control wildfires. We also build a linear regression model to assess the relationship between fire duration and some potential risk factors. In this project, we are going to examine:    
 
-* The frequency of wildfires across states over time from 2005 to 2015 and the top ten states with the largest number of wildfires in the ten-year period      
+* The frequency of wildfires across states over time from 2005 to 2015 and the top ten states with the largest number of wildfires in the eleven-year period      
 
 * The geographical distribution of wildfires across states with the number of wildfires per squre mile    
 
@@ -173,7 +173,7 @@ tidy_fire =
 
 ## **Exploratory Analysis**
 
-First, we would like to see whether there is any noticeable trends in time or noticeable difference between different states. Also, we would like to more which is the most common cause during 10 years. What’s more, we would like to explore whether the fire size and the fire burning duration had some relationship.
+First, we would like to see whether there is any noticeable trends in time or noticeable difference between different states. Also, we would like to more which is the most common cause during 11 years. What’s more, we would like to explore whether the fire size and the fire burning duration had some relationship.
 
 ### **Trends in Time**
 
@@ -268,7 +268,7 @@ tidy_fire %>%
 ```
 
 * **Top 10 states experienced most wildfires per year**
-The graph below illustrates top 10 states that experienced most wildfires per year during the 10 years. It validated that Texas and California had most fires per year.
+The graph below illustrates top 10 states that experienced most wildfires per year during the 11 years. It validated that Texas and California had most fires per year.
 
 ```{r}
 ## clean a new dataset with ranking of numbers and adjusted numbers
@@ -323,7 +323,7 @@ animate(anim, 200, fps = 15,  width = 680, height = 560)
 
 * **Geography for the per Square Mile**
 
-The figure below shows that the difference of the number of wildfire per square mile between different states during 10 years. We could found that Texas was not the top 1 in this plot but the top 1 is New York. We supposed that the Texas had the highest number of wildfire during 10 years because they had largest area.
+The figure below shows that the difference of the number of wildfire per square mile between different states during 11 years. We could found that Texas was not the top 1 in this plot but the top 1 is New York. We supposed that the Texas had the highest number of wildfire during 11 years because they had largest area.
 
 ```{r}
 state.x77 <- state.x77 %>%
@@ -354,7 +354,7 @@ tidy_fire %>%
 
 * **Wordclouding of causes**
 
-The figure below is the wordclouding of the top cause during 10 years. We could see that Debris Burning is the top cause during 10 years. So we would like to suggest that people might need to pay more attention on the debris burning which often caused serious wildfires.
+The figure below is the wordclouding of the top cause during 11 years. We could see that Debris Burning is the top cause during 11 years. So we would like to suggest that people might need to pay more attention on the debris burning which often caused serious wildfires.
 
 ```{r}
 fire = 
@@ -367,7 +367,7 @@ wordcloud(words = fire$stat_cause_descr, freq = fire$n_cause, scale = c(3, .8), 
           max.words=200, random.order=FALSE, rot.per=0.35, 
           colors=brewer.pal(8, "Dark2"))
 
-title( "Fig 6: Wordclouding of the top cause during 10 years")
+title( "Fig 6: Wordclouding of the top cause during 11 years")
 
 ```
   
@@ -416,9 +416,9 @@ ggplotly(size_duration)
 ## **Statistical Analysis**
 
 ## **Results and Discussion**
-In general, the number of wildfires in the U.S. from 2005 to 2015 is decreasing. Wildfires are more likely to happen from February to August. Texas had the highest number of wildfires during 2005 - 2015, while surprisingly, New York had the highest number of wildfires per square mile. The latter one should be more interesting because they will allow us to more directly compare wildfire across states. Plus, we find the most common cause to be debris burning. For wildfires with the highest burning sizes, they also have the longest duration. 
+In general, the number of wildfires in the U.S. from 2005 to 2015 is decreasing. Wildfires are more likely to happen from February to August. Texas had the highest number of wildfires during 2005 - 2015, while surprisingly, New York had the highest number of wildfires per square mile. The latter one should be more interesting because they will allow us to more directly compare wildfire across states. Plus, we find the most common cause to be debris burning. For wildfires with the highest burning size, they also have the longest duration. 
 
-We recognize that wildfires have various causes and the severity (size, duration, etc.) of wildfires differ by a number of factors; thus, the final result that we present here may not be as accurate and comprehensive as we hoped it to be. Furthermore, as climate change continues to intensify wildfires, it is everyone's responsibility to understand and learn how to prevent wildfires from happening and protect nature and ourselves. In light of the above, we shall continue our quest to correctly and timely predict future wildfires, using extensive datasets with advanced predictive modelling techniques. 
+We recognize that wildfires have various causes and the severity (size, duration, etc.) of wildfires differ by a number of factors; thus, the final result that we present here may not be as accurate and comprehensive as we hoped it to be. Furthermore, as climate change continues to intensify wildfires, it is everyone's responsibility to understand and learn how to prevent wildfires from happening and protect nature and ourselves. In light of the above, we shall continue our quest to correctly and timely predict future wildfires, using extensive datasets with advanced predictive modeling techniques. 
 
 
 
