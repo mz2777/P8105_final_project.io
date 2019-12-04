@@ -13,9 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## **Motivation**
-Wildfire hazards are considered as national threats, which can cause 
-We are also motivated by the disastrous aftermath of the deadly wildfires in California this season: their long-lasting threats to human health and the ecosystem. We
-Currently, how to correctly predict and manage wildfires still remains elusive. 
+Wildfire hazards are considered as national threats, which can devour everything in its path, trees, homes and even lives, and spread for miles within a few minutes. The disastrous aftermath of the deadly wildfires, including their long-lasting threats to human health and the ecosystem, is also very worrying. According to the U.S. Fire service, more than 700 wildfires occur every year, burning down approximately 7 million acres of land and destroying more than 26,000 structures. The U.S. spends over 5 billion dollars each year to fight these uncontrollable monster fires, yet currently the correct prediction and management of wildfires still remain elusive. 
 
 #### Wildfires in the U.S.   
 Here are some facts about wildfires in the U.S.     
@@ -83,5 +81,5 @@ At first, we were interested in exploring the correlation between wildfire's occ
 We recognize that wildfires have various causes and the severity (size, duration...) of wildfires differ by a number of factors; thus, the co
 
 
-As climate change continues to intensify wildfires, it is everyone's responbility to unsderstand and learn how to prevent wildfires from happening and protect nature and ourselves. Futhermore, we shall continue our quest to correctly and timely predict future wildfires, using extensive dataset with advanced predictive modelling techniques. 
+As climate change continues to intensify wildfires, it is everyone's responbility to understand and learn how to prevent wildfires from happening and protect nature and ourselves. Futhermore, we shall continue our quest to correctly and timely predict future wildfires, using extensive dataset with advanced predictive modelling techniques. 
 
