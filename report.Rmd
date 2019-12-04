@@ -13,34 +13,35 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## **Motivation**
-Wildfire hazards 
-#### Wildfires in the U.S.
-Here are some facts about wildfires in the U.S.   
-* Cause
+Wildfire hazards are  
+#### Wildfires in the U.S.   
+Here are some facts about wildfires in the U.S.     
+* Cause   
 According to the U.S. Department of Interior, about 90 percent of wildfires in the United States are started by human, resulting from unattended campfires, debris burnings, downed equipments, negligently discarded cigarettes and intentional acts of arson, etc. Verisk's 2017 Wildfire Risk Analysis showed that at present, 4.5 million U.S. homes were identified as having high or extreme high risk of wildfire; more than 2 million homes come from California. The nature (lightning or lava) and climate change, is found to be responsible for the remaining 10 percent.   
-* Loss  
+* Loss     
 In October 2019, significant fires broke out in California and led to the evacuation of over 200,000 people, which were declared as a state of emergency. The Kincade Fire in Sonoma County has burned over 76,000 acres. The Getty Fire in Los Angeles caused over 7000 residences to be placed in a mandatory evacuation zone.    
 
 In 2018, there were 58,083 wildfires where 8.8 million acres were burned.   
 
 In 2017, there were 71,499 wildfires where over 10 million acres were burned.   
-* Policy
-The governmental policy on has shifted from 
+* Policy   
+The governmental strategy on wildfires has undergone a major shift from the primary focus on suppression of wildfires to multiple, comprehensive measures with sustainable potential. The current policies aim to help manage wildfire risk by reduction of hazardous fuels, restoration of the ecosystem and assistance from the communities, etc. For instance, the federal government have formulatted and implemented policies on protecting funds dedicated to forest management and resotration, as well as expediting small-scale forest management research projects.   
 
 #### Goals of our Project
 Therefore, considering these massive, devastating wildfires and their catastropic effects on human communities and the environment, we decide to investigate the following research questions to discover if there's any clear trend and how to better prevent and control wildfires. We also build a linear regression model to predict the relationship between fire duration and other potential risk factors. We would like to examine:   
-* The frequency of fires acrossing states over time from 2005 to 2015 and the top ten states with the largest number of wildfires in the ten-year period   
+* The frequency of fires acrossing states over time from 2005 to 2015 and the top ten states with the largest number of wildfires in the ten-year period      
 
-* The geographical distribution of wildfires across states with the number of wildfires per squre mile
+* The geographical distribution of wildfires across states with the number of wildfires per squre mile   
 
-* The most common causes of wildfires    
+* The most common causes of wildfires       
 
-* The relationship between duration and fire size
+* The relationship between duration and fire size   
 
-* The association among a number of factors and the duration of wildfires in Riverside county, California
+* The association among a number of factors and the duration of wildfires in Riverside county, California   
 
 ## **Initial Questions**
-
+At first, we are interested in exploring the correlation between wildfire occurence and a number of factors, such as, can we predict when the wildfire will .
+However, because the information in our dataset is relatively limited with many missing values, we fail to provide a predictive model with high accuracy and 
 ## **Data**
 
 * **`state` and `county` datasets in package `ggplot2`**
@@ -72,5 +73,5 @@ Therefore, considering these massive, devastating wildfires and their catastropi
 ## **Statistical Analysis**
 
 ## **Discussion**
-We recognize that wildfire 
+We recognize that wildfires are with various causes and . As climate change further intensifies wildfires, how to 
 
