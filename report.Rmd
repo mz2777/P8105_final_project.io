@@ -17,7 +17,6 @@ knitr::opts_chunk$set(
   fig.height = 6,
   out.width = "90%"
 )
-library(leaflet)
 library(lubridate)
 library(ggExtra)
 library(plotly)
@@ -205,8 +204,6 @@ fig_1 = count_overtime %>%
 
 ggplotly(fig_1)
 ```
-
-
 
 *  **Heatmap for Trend over Time.**
 
