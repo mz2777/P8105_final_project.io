@@ -147,7 +147,7 @@ ggplotly(heatmap_plot + theme(legend.position = "none"))
 The figure below shows the difference of the number of wildfires betwwen different states. It is obviously that the Texas and California had the highest number of wildfires during 2005 - 2015.
 
 ```{r}
-state_map <- map_data('state')
+state_map = map_data('state')
 tidy_fire %>% 
     group_by(region) %>%
     summarize(n = n()) %>%
@@ -224,7 +224,7 @@ animate(anim, 200, fps = 15,  width = 680, height = 560)
 The figure below shows that the difference of the number of wildfire per square mile between different states during 11 years. We could found that Texas was not the top 1 in this plot but the top 1 is New York. We supposed that the Texas had the highest number of wildfire during 11 years because they had largest area.
 
 ```{r}
-state.x77 <- state.x77 %>%
+state.x77 = state.x77 %>%
     as.data.frame() %>%
     mutate(region = tolower(rownames(state.x77)))
 
