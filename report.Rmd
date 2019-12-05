@@ -385,7 +385,7 @@ rank_cause = tidy_fire %>%
   labs(x = "", y = "Number of Fires", title = "Fig 7: Wildfire Counts in the U.S. by Causes from 2005 to 2015") +
   viridis::scale_color_viridis() + theme(legend.position = "none") + theme_bw() 
 
-ggplotly(rank_cause)
+ggplotly(rank_cause, tooltip = "y")
 ```
 
 ### **Association between Duration and Fire Size**
@@ -497,6 +497,8 @@ p1 = fire_15_weather %>%
   geom_smooth(aes(y = tmean * 5, color = county), 
               method = "loess", se = FALSE, alpha = .7, size = .8) +
   scale_y_continuous(sec.axis = sec_axis(~./5, name = "Mean temperature (°C)")) +
+  scale_colour_viridis_d() +
+  scale_fill_viridis_d() +
   labs(title = "Fig 1. Distribution of mean temperature and number of fires in 2015",
        x = "Date",
        y = "Number of fires",
