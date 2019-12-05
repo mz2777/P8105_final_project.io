@@ -8,7 +8,7 @@ output:
 
 ## **Motivation**
 
-Wildfire hazards are considered as national threats. On average, more than 700 wildfires occur, over 7 million acres of land are burned down and 26,000 structures are destroyed annually, resulting in substantial economic and environmental losses with a number of fatalities and injuries. Considering the massive and devastating impacts of wildfires on human communities and the ecosystem, we decide to investigate wildfire trends available from our dataset in the hope of understanding how to better prevent and control wildfires. 
+Wildfire hazards are considered as national threats. On average, over 7 million acres of land are burned down and 26,000 structures are destroyed annually, resulting in substantial economic and environmental losses with a number of fatalities and injuries ( [U.S. Fire Statistics](https://www.usfa.fema.gov/data/statistics/)). Considering the massive and devastating impacts of wildfires on human communities and the ecosystem, we decide to investigate wildfire trends available from our dataset in the hope of understanding how to better prevent and control wildfires. 
 
 ## **Data**
 
@@ -39,3 +39,7 @@ We also build a simple linear regression model on the monthly number of fires an
 
 ## **Conclusion**
 We recognize that wildfires have various causes and the severity (size, duration, etc.) of wildfires differ by a number of factors; thus, the final result that we present here may not be as accurate and comprehensive as we hoped it to be. Furthermore, as climate change continues to intensify wildfires, it is everyone's responsibility to understand and learn how to prevent wildfires from happening and protect nature and ourselves. In light of the above, we shall continue our quest to correctly and timely predict future wildfires, using extensive datasets with advanced predictive modeling techniques. 
+
+## **Screencast**
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/4CTq6uFz2T8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
