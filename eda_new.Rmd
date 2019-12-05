@@ -284,7 +284,7 @@ rank_cause = tidy_fire %>%
   geom_bar(stat = "identity", aes(fill = cause), alpha=.6, width=.4) +
   coord_flip() +
   labs(x = "", y = "Number of Fires", title = "Fig 7: Wildfire Counts in the U.S. by Causes from 2005 to 2015") +
-  viridis::scale_color_viridis() + theme_bw() + theme(legend.position = "none")
+  viridis::scale_color_viridis() + theme(legend.position = "none") + theme_bw()
 
 ggplotly(rank_cause, tooltip = "y")
 ```
