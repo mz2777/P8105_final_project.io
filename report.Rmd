@@ -193,20 +193,13 @@ count_overtime =
   group_by(fire_year) %>% 
   summarize(cases = n())
 
-fig_1 = count_overtime %>% 
-  ggplot(aes(x = fire_year, y = cases)) + 
-  geom_point() + geom_line() + 
-  labs(
-    title = "Fig 1: The number of wildfires trends over time in U.S. ",
-    x = "Year",
-    y = "Total wildfire cases in U.S.",
-    caption = "Data from 2005 to 2015"
-  ) + 
-  scale_x_continuous(
-    breaks = c(2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015), 
-    labels = c("2005","2006","2007","2008","2009","2010","2011","2012","2013","2014","2015"))
-
-ggplotly(fig_1)
+count_overtime %>%
+  plot_ly(x = ~fire_year, y = ~cases, type = "scatter", mode = "lines+markers") %>% 
+  layout(
+    title = "Fig 1: The number of wildfires trends over time in U.S.",
+    xaxis = list(title = "Year"),
+    yaxis = list(title = "Total wildfire cases in U.S.")
+  )
 ```
 
 *  **Heatmap for Trend over Time.**
@@ -253,7 +246,7 @@ ggplotly(heatmap_plot + theme(legend.position = "none"))
 The figure below shows the difference of the number of wildfires between different states. It is obviously that the Texas and California had the highest number of wildfires during 2005 - 2015.
 
 ```{r}
-state_map <- map_data('state')
+state_map = map_data('state')
 tidy_fire %>% 
     group_by(region) %>%
     summarize(n = n()) %>%
@@ -330,7 +323,7 @@ animate(anim, 200, fps = 15,  width = 680, height = 560)
 The figure below shows that the difference of the number of wildfire per square mile between different states during 11 years. We could found that Texas was not the top 1 in this plot but the top 1 is New York. We supposed that the Texas had the highest number of wildfire during 11 years because they had largest area.
 
 ```{r}
-state.x77 <- state.x77 %>%
+state.x77 = state.x77 %>%
     as.data.frame() %>%
     mutate(region = tolower(rownames(state.x77)))
 
@@ -390,7 +383,7 @@ rank_cause = tidy_fire %>%
   geom_bar(stat = "identity", aes(fill = cause), alpha=.6, width=.4) +
   coord_flip() +
   labs(x = "", y = "Number of Fires", title = "Fig 7: Wildfire Counts in the U.S. by Causes from 2005 to 2015") +
-  viridis::scale_color_viridis() + theme_bw() + theme(legend.position = "none")
+  viridis::scale_color_viridis() + theme(legend.position = "none") + theme_bw() 
 
 ggplotly(rank_cause)
 ```
